@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+
+<html lang="es"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_standard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "secondary-fixed": "#c2eaea", "secondary": "#3f6565", "primary-fixed": "#ffd9e3", "on-background": "#1b1c1c", "on-surface": "#1b1c1c", "primary-container": "#85144b", "on-surface-variant": "#554147", "outline-variant": "#dbbfc6", "surface-container-lowest": "#ffffff", "on-secondary": "#ffffff", "inverse-primary": "#ffb0ca", "surface-dim": "#dbd9d9", "outline": "#887177", "on-secondary-fixed-variant": "#264d4d", "error-container": "#ffdad6", "inverse-on-surface": "#f2f0f0", "surface": "#fbf9f8", "on-secondary-container": "#436969", "on-primary-fixed-variant": "#87164c", "error": "#ba1a1a", "tertiary-fixed": "#ffdbc8", "inverse-surface": "#303030", "primary": "#620034", "surface-tint": "#a63164", "background": "#fbf9f8", "surface-container-high": "#eae8e7", "surface-container": "#efeded", "on-error": "#ffffff", "primary-fixed-dim": "#ffb0ca", "on-primary": "#ffffff", "tertiary": "#4f2200", "secondary-fixed-dim": "#a6cecd", "secondary-container": "#bfe7e7", "on-tertiary-fixed-variant": "#733501", "on-tertiary-fixed": "#311300", "on-primary-container": "#ff91b8", "surface-bright": "#fbf9f8", "on-secondary-fixed": "#002020", "tertiary-fixed-dim": "#ffb689", "surface-container-highest": "#e4e2e2", "surface-container-low": "#f5f3f3", "on-error-container": "#93000a", "on-tertiary-container": "#f69e64", "on-primary-fixed": "#3e001f", "tertiary-container": "#713400", "on-tertiary": "#ffffff", "surface-variant": "#e4e2e2" }, "borderRadius": { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" }, "spacing": { "space-sm": "0.5rem", "space-md": "1rem", "space-xs": "0.25rem", "gutter-sm": "1rem", "gutter": "1.5rem", "margin": "3rem", "space-xl": "2.5rem", "space-lg": "1.5rem", "margin-sm": "1.25rem" }, "fontFamily": { "body-lg": ["Plus Jakarta Sans"], "headline-md": ["Newsreader"], "label-md": ["Plus Jakarta Sans"], "headline-lg-mobile": ["Newsreader"], "headline-lg": ["Newsreader"], "headline-sm": ["Newsreader"], "body-sm": ["Plus Jakarta Sans"], "headline-xl-mobile": ["Newsreader"], "body-md": ["Plus Jakarta Sans"], "data-tabular": ["Plus Jakarta Sans"], "headline-xl": ["Newsreader"], "label-eyebrow": ["Plus Jakarta Sans"] }, "fontSize": { "body-lg": ["16px", { "lineHeight": "26px", "fontWeight": "400" }], "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "500" }], "label-md": ["13px", { "lineHeight": "18px", "fontWeight": "600" }], "headline-lg-mobile": ["26px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "400" }], "headline-lg": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.015em", "fontWeight": "400" }], "headline-sm": ["18px", { "lineHeight": "24px", "fontWeight": "500" }], "body-sm": ["12px", { "lineHeight": "18px", "fontWeight": "400" }], "headline-xl-mobile": ["32px", { "lineHeight": "38px", "letterSpacing": "-0.01em", "fontWeight": "400" }], "body-md": ["14px", { "lineHeight": "22px", "fontWeight": "400" }], "data-tabular": ["12px", { "lineHeight": "16px", "fontWeight": "500" }], "headline-xl": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "400" }], "label-eyebrow": ["11px", { "lineHeight": "16px", "letterSpacing": "0.08em", "fontWeight": "700" }] } } } };</script></head><body class="bg-surface font-body-md text-body-md text-on-surface antialiased"><header class="fixed top-0 left-0 w-full z-50 bg-surface/95 backdrop-blur-md shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="bg-primary-container text-on-primary py-space-xs px-margin-sm md:px-margin text-center font-label-eyebrow text-label-eyebrow uppercase tracking-wider flex items-center justify-center gap-space-sm overflow-x-auto whitespace-nowrap"><span>🚚 Envíos a todo el país · Logística propia en AMBA</span><span class="opacity-40">|</span><span>📞 Atención mayorista e imprentas: (011) 4201-1180</span><span class="opacity-40">|</span><span>💬 WhatsApp ventas directas</span></div><div class="h-20 max-w-[1280px] mx-auto px-margin-sm md:px-gutter flex items-center justify-between gap-gutter"><div class="flex items-center gap-space-md shrink-0"><img alt="logo-bertolin-1.png" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1VpImI8v3Kh-IfTKaC5DQkSXtS2DBB016vm_cb-uRJSj5HgI2UHoL3cF8QjPtKnvEI5l6EBgdt_9vqHTI9UWfz5-Yfwj5-y3ioIyOBerR9L44HrZmX5IikuMmLAeLsUiwwxWosSHOqH3HEwnFPkWh2oRdIu4byAy4hYkW2B6W_AayoHaLYs46MwhmUHI-4ldhhvLXuG7OeThg9cykGAZY23VgEZmWiHqDganbbKdfLWjyVopTnEO1yVXN-rz_wGL6x3ka-62mx-X1E"/><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-primary tracking-tight">Papelera Bertolín</span><span class="font-label-eyebrow text-label-eyebrow text-on-surface-variant uppercase">Desde 1980 · Buenos Aires</span></div></div><div class="hidden lg:flex flex-1 max-w-xl mx-space-md"><div class="w-full flex items-center bg-surface-container-lowest rounded-lg p-space-xs shadow-[0_1px_3px_0_rgba(74,74,74,0.03)]"><button class="flex items-center gap-space-xs px-space-sm py-space-xs font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors shrink-0" type="button"><span>Todos</span><span class="material-symbols-outlined text-[16px]">expand_more</span></button><div class="w-px h-5 bg-surface-container mx-space-xs"></div><input class="w-full px-space-sm py-space-xs bg-transparent font-body-sm text-body-sm text-on-surface placeholder:text-outline focus:outline-none" placeholder="Buscar papeles, resmas, cartulinas, gramajes (ej. Chambril 150g, Kraft)..." type="text"/><button aria-label="Buscar en catálogo" class="p-space-xs text-primary hover:text-primary-container transition-colors shrink-0" type="button"><span class="material-symbols-outlined text-[20px]">search</span></button></div></div><div class="flex items-center gap-space-md shrink-0"><a class="hidden xl:flex items-center gap-space-xs font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#"><span class="material-symbols-outlined text-[18px]">download</span><span>Lista PDF</span></a><button class="hidden sm:flex items-center gap-space-xs font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" type="button"><span class="material-symbols-outlined text-[20px]">badge</span><span>Mi Cuenta / CUIT</span></button><button class="flex items-center gap-space-sm bg-primary text-on-primary hover:bg-primary-container px-space-md py-space-sm rounded-lg transition-colors shadow-[0_2px_8px_-2px_rgba(74,74,74,0.05)]" type="button"><span class="material-symbols-outlined text-[20px]">shopping_bag</span><div class="flex flex-col text-left"><span class="font-label-md text-label-md leading-none">$ 82.400</span><span class="font-label-eyebrow text-[10px] text-primary-fixed leading-tight">3 bultos</span></div></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div><div class="bg-surface-container-low"><div class="max-w-[1280px] mx-auto px-margin-sm md:px-gutter flex items-center justify-between"><nav class="flex items-center gap-gutter overflow-x-auto py-space-sm whitespace-nowrap" data-active-classes="text-primary font-bold"><a class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors" data-path="catalogo-de-papeles" href="#">Productos</a><a class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors" data-path="servicios-de-corte" href="#">Servicios de Corte</a><a class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors" data-path="venta-mayorista" href="#">Venta Mayorista</a><a class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors" data-path="cotizador-a-medida" href="#">Cotizador Online</a><a class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors" data-path="la-empresa" href="#">La Empresa</a><a class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors" data-path="contacto" href="#">Contacto</a></nav><div class="hidden md:flex items-center gap-space-xs text-on-surface-variant font-label-eyebrow text-label-eyebrow uppercase"><span class="w-2 h-2 rounded-full bg-secondary"></span><span>Planta y Depósito Central</span></div></div></div><div class="bg-surface-container-lowest"><div class="max-w-[1280px] mx-auto px-margin-sm md:px-gutter flex items-center gap-space-md overflow-x-auto py-space-xs scrollbar-none text-nowrap"><span class="font-label-eyebrow text-label-eyebrow text-on-surface-variant uppercase shrink-0">Rubros rápidos:</span><a class="font-body-sm text-body-sm px-space-sm py-space-xs rounded bg-surface hover:bg-surface-container text-on-surface transition-colors" href="#">Resmas oficina</a><a class="font-body-sm text-body-sm px-space-sm py-space-xs rounded bg-surface hover:bg-surface-container text-on-surface transition-colors" href="#">Papel Obra plano</a><a class="font-body-sm text-body-sm px-space-sm py-space-xs rounded bg-surface hover:bg-surface-container text-on-surface transition-colors" href="#">Cartulinas encuadernación</a><a class="font-body-sm text-body-sm px-space-sm py-space-xs rounded bg-surface hover:bg-surface-container text-on-surface transition-colors" href="#">Kraft &amp; Embalaje</a><a class="font-body-sm text-body-sm px-space-sm py-space-xs rounded bg-surface hover:bg-surface-container text-on-surface transition-colors" href="#">Autoadhesivos</a><a class="font-body-sm text-body-sm px-space-sm py-space-xs rounded bg-surface hover:bg-surface-container text-on-surface transition-colors" href="#">Bobinas &amp; Plotter</a><a class="font-body-sm text-body-sm px-space-sm py-space-xs rounded bg-surface hover:bg-surface-container text-on-surface transition-colors" href="#">Sobres comerciales</a></div></div></header><main class="w-full pt-20 bg-surface min-h-[calc(100vh-280px)]"><div class="flex flex-col w-full">
+<div class="max-w-[1280px] w-full mx-auto px-margin-sm md:px-gutter py-space-md">
+<!-- Micro Breadcrumb Bar -->
+<nav aria-label="Navegación secundaria" class="flex items-center gap-space-xs text-on-surface-variant font-label-eyebrow text-label-eyebrow uppercase tracking-wider py-space-xs mb-space-md">
+<a class="hover:text-primary transition-colors" href="#">Inicio</a>
+<span class="opacity-40">/</span>
+<a class="hover:text-primary transition-colors" href="#">Catálogo</a>
+<span class="opacity-40">/</span>
+<a class="hover:text-primary transition-colors" href="#">Cartulinas Pesadas</a>
+<span class="opacity-40">/</span>
+<span class="text-primary font-bold">Cartulina Ilustración 300g</span>
+</nav>
+<!-- Main PDP Hero Split -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-start">
+<!-- LEFT COLUMN: Gallery & Physical Attributes (5 cols desktop) -->
+<div class="lg:col-span-5 flex flex-col gap-space-md">
+<!-- Main Media Frame -->
+<div class="relative w-full rounded-xl overflow-hidden bg-surface-container-low shadow-sm flex flex-col items-center justify-center p-space-md">
+<div class="absolute top-space-md left-space-md z-10 flex flex-col gap-space-xs">
+<span class="inline-flex items-center gap-1 bg-surface-container-lowest text-primary font-label-eyebrow text-label-eyebrow uppercase px-space-sm py-1 rounded shadow-sm">
+<span class="material-symbols-outlined text-[14px] text-secondary">verified</span>
+              FSC Certificado
+            </span>
+<span class="inline-flex items-center gap-1 bg-tertiary-container text-on-tertiary font-label-eyebrow text-label-eyebrow uppercase px-space-sm py-1 rounded shadow-sm">
+              Stock Inmediato
+            </span>
+</div>
+<div class="absolute top-space-md right-space-md z-10">
+<button aria-label="Añadir a lista de deseos" class="w-9 h-9 rounded-full bg-surface-container-lowest/90 backdrop-blur-sm flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors shadow-sm" type="button">
+<span class="material-symbols-outlined text-[20px]">favorite</span>
+</button>
+</div>
+<!-- Main Heavy Cardstock Realistic Sheet Render Preview -->
+<div class="w-full aspect-[4/3] rounded-lg overflow-hidden bg-surface-container-lowest flex items-center justify-center relative group p-space-sm">
+<img class="w-full h-full object-cover rounded shadow-md transition-transform duration-300 group-hover:scale-[1.02]" data-alt="High resolution studio photography of a neat stack of premium heavy white silk cardstock sheets 300 grams with subtle paper fiber texture and clean machine trimmed edges, resting gently on a warm neutral architect drafting table under soft diffuse studio lighting, warm beige and burgundy color tones" id="main-preview-img" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCrJPUWG5a4yJk4cN_X-4GGTR2JFNHSC45X4U-_M6fZ_m9Zcod21OV4_VMGsSdr5BynYCb_gBVv7QePLfXlP8zbHKrZTlXbDkWJgk6jRnPWoK8greSlaY-kzVgnZGYaCspYwESmqVvrnniUJ9FLxEZtesagjcX90YEv79qBuMfi2ZFW05x37I51FQ8dkvFfIVEQOiyKnpB4T9pk5KVyNuTit7vg894KlaEW7sWT0Nr9keCdMkVkLQPFlg"/>
+<div class="absolute bottom-space-sm right-space-sm bg-inverse-surface/85 backdrop-blur-sm text-inverse-on-surface text-[11px] font-label-md px-space-sm py-0.5 rounded flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">zoom_in</span> Pliego 70 x 100 cm
+            </div>
+</div>
+</div>
+<!-- Thumbnail Selector Carousel -->
+<div class="grid grid-cols-4 gap-space-sm">
+<button class="thumb-btn active-thumb p-1 rounded-lg bg-surface-container-lowest shadow-sm transition-all focus:outline-none ring-2 ring-primary" onclick="selectThumb(0, this)" type="button">
+<div class="aspect-square rounded overflow-hidden bg-surface-container-low">
+<img class="w-full h-full object-cover" data-alt="High angle shot of a clean stack of 70x100 cm heavy cardstock reams ready for offset printing on wood industrial pallet" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDHFJWQaHMfs1t53GKq8OlT6uqxVSCmBCqCW0Kk_VpK3JH1IgZzxu-5vY5a_Zb_FRBsdAvImBUBFuaRqVLCnwzIsEPHbcZvSDEdrNXPbEQ3ZgUXVakWbWfQLqoFGCjAIvxWEMMQzvFDkqNpGv5bXHDwDNqnBu9J61G2nTduRIGaADhlD30fjReEFvXJd5mBZB1Qd7xn3gp_MH3-99QAiT4qRdO5ipvfR_pDahMlZyxL2op1IBljTYGZ2Q"/>
+</div>
+<p class="font-data-tabular text-[10px] text-on-surface-variant text-center mt-1 truncate">1. Pliegos 70x100</p>
+</button>
+<button class="thumb-btn p-1 rounded-lg bg-surface-container-lowest shadow-sm hover:bg-surface-container transition-all focus:outline-none" onclick="selectThumb(1, this)" type="button">
+<div class="aspect-square rounded overflow-hidden bg-surface-container-low">
+<img class="w-full h-full object-cover" data-alt="Extreme macro close up of smooth semi-matte coated paper fiber texture showing crisp pure white surface and opacity" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB4IfmrkZdUqQlCcC0jDkov3ypdjjTzceYGzVqjH5f8mfP42JBLA7BURuVEORk16ghh1ZvPMMMA6YKzhAiEUaOMYfxvw4yO84jGurEVGmjuDBi3YpUQuzB3Y0KDfbx3JeSoP6pEt5GARcxc3SDpOFxv_f5Wu5SwlXAGJMcuXogNkq8-Bep4HmSVU3wS2-hVckK89rLfSGrcNFYlqMAQENnHELU7LnWNbvdb5p2yEaynLuxBRGPYML36jw"/>
+</div>
+<p class="font-data-tabular text-[10px] text-on-surface-variant text-center mt-1 truncate">2. Fibra y Grano</p>
+</button>
+<button class="thumb-btn p-1 rounded-lg bg-surface-container-lowest shadow-sm hover:bg-surface-container transition-all focus:outline-none" onclick="selectThumb(2, this)" type="button">
+<div class="aspect-square rounded overflow-hidden bg-surface-container-low">
+<img class="w-full h-full object-cover" data-alt="Hands holding a 300g cardstock showing structural stiffness, smooth curve bend without cracking along the spine" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCsh23PbwrwhfD-1eebQ7JAqNFr3N4ndyAmre-RiKiQej_-Fh_FoyZTucSJE_wf6HDJAkWZNpUXORoNVsi9RF_yQCNNQySPbeyUHa9UpfZ7wxCwcOFIRCkVGFAwUlNObclZjeb_gzUlR6L28WjFNOez5dEkz8--Y5b8E4RcX-_AMhsN7m_QRtbQyT2ombfT0HfurHToimUAl50udM6CFhC8uiAbcftpiH1AgKdsVFHAe_HE_yfHFJiCwA"/>
+</div>
+<p class="font-data-tabular text-[10px] text-on-surface-variant text-center mt-1 truncate">3. Test Rigidez</p>
+</button>
+<button class="thumb-btn p-1 rounded-lg bg-surface-container-lowest shadow-sm hover:bg-surface-container transition-all focus:outline-none" onclick="selectThumb(3, this)" type="button">
+<div class="aspect-square rounded overflow-hidden bg-surface-container-low">
+<img class="w-full h-full object-cover" data-alt="Professional factory sealed waterproof Kraft wrap packaging with reinforced protective corner guards ready for truck shipping" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAJRv35_zqiyVFiSOJs4cBYnWrGsh15U7cfe4ScMLl68dxrGrvrpyNTVVLtRWHWhASQdEd3IE507Z32kp5PSHItN6cuX_LtpeXH6XudannxK7ERKsmJScBl-YtAQODXgGmHDdmOGXaayzPXevjtNtxX-uAm5i9s9yatnu2U52ZGfoTaXG_U38ynsVUq8L6jrKSywa-_7Lw3JITNTTDVIzcmPhHwWsuIZbYt9XRmBSsnWxY1haqZd0-qTQ"/>
+</div>
+<p class="font-data-tabular text-[10px] text-on-surface-variant text-center mt-1 truncate">4. Empaque Fabril</p>
+</button>
+</div>
+<!-- Technical Certification Attribute Pills -->
+<div class="grid grid-cols-2 gap-space-sm pt-space-xs">
+<div class="flex items-center gap-space-sm bg-surface-container-lowest p-space-sm rounded-lg shadow-sm">
+<div class="w-8 h-8 rounded-full bg-secondary-fixed flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[18px] text-on-secondary-fixed-variant">eco</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-eyebrow text-label-eyebrow uppercase text-on-surface-variant">Origen Sustentable</span>
+<span class="font-label-md text-label-md text-on-surface truncate">FSC Certificado 100%</span>
+</div>
+</div>
+<div class="flex items-center gap-space-sm bg-surface-container-lowest p-space-sm rounded-lg shadow-sm">
+<div class="w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[18px] text-on-primary-fixed-variant">wb_sunny</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-eyebrow text-label-eyebrow uppercase text-on-surface-variant">Luminosidad</span>
+<span class="font-label-md text-label-md text-on-surface truncate">Blancura 98% ISO</span>
+</div>
+</div>
+<div class="flex items-center gap-space-sm bg-surface-container-lowest p-space-sm rounded-lg shadow-sm">
+<div class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[18px] text-primary">science</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-eyebrow text-label-eyebrow uppercase text-on-surface-variant">Conservación</span>
+<span class="font-label-md text-label-md text-on-surface truncate">PH Neutro / Sin ácido</span>
+</div>
+</div>
+<div class="flex items-center gap-space-sm bg-surface-container-lowest p-space-sm rounded-lg shadow-sm">
+<div class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[18px] text-secondary">print</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-eyebrow text-label-eyebrow uppercase text-on-surface-variant">Tecnología</span>
+<span class="font-label-md text-label-md text-on-surface truncate">Offset, Digital &amp; Indigo</span>
+</div>
+</div>
+</div>
+<!-- Sheet Dimensions Quick Visual Diagram -->
+<div class="bg-surface-container p-space-md rounded-xl flex items-center justify-between">
+<div class="flex items-center gap-space-md">
+<div class="w-14 h-11 bg-surface-container-lowest rounded shadow-sm flex flex-col items-center justify-center font-data-tabular text-[10px] text-on-surface-variant font-bold leading-tight">
+<span>70 cm</span>
+<span class="text-[8px] opacity-60">× 100 cm</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface">Formato Madre Estándar</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Apto guillotina lineal para cortes comerciales SRA3, A3, A4 y especiales.</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-primary text-[24px]">aspect_ratio</span>
+</div>
+</div>
+<!-- RIGHT COLUMN: Commercial Specs, Pricing, Cutter Configurator (7 cols desktop) -->
+<div class="lg:col-span-7 flex flex-col gap-space-md">
+<!-- Header Info -->
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center justify-between flex-wrap gap-space-xs">
+<span class="bg-secondary-fixed text-on-secondary-fixed-variant px-space-sm py-0.5 rounded font-label-eyebrow text-label-eyebrow uppercase tracking-wider font-bold">
+              SUZANO / CHAMBRIL · CALIDAD PRIMERA A
+            </span>
+<div class="flex items-center gap-1 text-on-surface-variant font-data-tabular text-body-sm">
+<span>SKU: <strong class="text-on-surface">CAR-ILU-300-70100</strong></span>
+</div>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface leading-tight mt-1">
+            Cartulina Ilustración Semi-Mate 300 grs — Pliego 70 x 100 cm
+          </h1>
+<div class="flex items-center gap-space-md flex-wrap mt-1">
+<div class="flex items-center gap-1.5 text-secondary">
+<span class="w-2.5 h-2.5 rounded-full bg-secondary animate-pulse"></span>
+<span class="font-label-md text-label-md font-semibold text-secondary">En stock (140 paquetes en depósito Avellaneda)</span>
+</div>
+<span class="text-outline-variant">•</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Despacho en 24h a todo el país</span>
+</div>
+</div>
+<!-- Main Price Display Card -->
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col sm:flex-row sm:items-end justify-between gap-space-md">
+<div class="flex flex-col">
+<span class="font-label-eyebrow text-label-eyebrow uppercase text-on-surface-variant">Precio mayorista por paquete (100 pliegos)</span>
+<div class="flex items-baseline gap-space-sm mt-0.5">
+<span class="font-headline-xl text-headline-xl text-primary font-normal leading-none" id="display-unit-price">$ 62.400</span>
+<span class="font-label-md text-label-md text-on-surface-variant">IVA incl.</span>
+</div>
+<div class="flex items-center gap-2 mt-1">
+<span class="font-data-tabular text-body-sm text-on-surface-variant bg-surface-container px-2 py-0.5 rounded" id="display-sheet-price">
+                $ 624 por pliego
+              </span>
+<span class="font-body-sm text-body-sm text-secondary font-medium">Factura A o B discriminada</span>
+</div>
+</div>
+<div class="bg-primary-fixed/40 px-space-md py-space-sm rounded-lg flex items-center gap-space-sm shrink-0">
+<span class="material-symbols-outlined text-primary text-[22px]">savings</span>
+<div class="flex flex-col">
+<span class="font-label-eyebrow text-label-eyebrow uppercase text-on-surface-variant">Ahorro Escalonado</span>
+<span class="font-label-md text-label-md text-primary font-bold">Hasta 15% OFF x Pallet</span>
+</div>
+</div>
+</div>
+<!-- Wholesale Volume Discount Tier Selector -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm">
+<div class="flex items-center justify-between mb-space-sm">
+<span class="font-label-eyebrow text-label-eyebrow uppercase text-on-surface font-bold tracking-wider flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-tertiary">scale</span>
+              Escala de Precios por Volumen
+            </span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Precios actualizados para imprentas</span>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-space-sm">
+<!-- Tier 1 -->
+<div class="tier-card p-space-sm rounded-lg bg-surface-container-low transition-all cursor-pointer" id="tier-box-1" onclick="selectTierQuantity(1)">
+<div class="flex justify-between items-center mb-1">
+<span class="font-label-md text-label-md text-on-surface font-semibold">1 a 4 paquetes</span>
+<span class="text-[11px] font-label-eyebrow text-on-surface-variant uppercase">Base</span>
+</div>
+<div class="font-headline-sm text-headline-sm text-on-surface font-normal">$ 62.400</div>
+<p class="font-data-tabular text-[11px] text-on-surface-variant mt-0.5">$ 624 / pliego</p>
+</div>
+<!-- Tier 2 -->
+<div class="tier-card active-tier p-space-sm rounded-lg bg-surface-container-low transition-all cursor-pointer relative" id="tier-box-2" onclick="selectTierQuantity(5)">
+<span class="absolute -top-2 right-2 bg-primary text-on-primary font-label-eyebrow text-[10px] px-1.5 py-0.2 rounded uppercase">
+                -8% Ahorro
+              </span>
+<div class="flex justify-between items-center mb-1">
+<span class="font-label-md text-label-md text-on-surface font-semibold">5 a 19 paquetes</span>
+</div>
+<div class="font-headline-sm text-headline-sm text-primary font-medium">$ 57.408</div>
+<p class="font-data-tabular text-[11px] text-on-surface-variant mt-0.5">$ 574 / pliego</p>
+</div>
+<!-- Tier 3 -->
+<div class="tier-card p-space-sm rounded-lg bg-surface-container-low transition-all cursor-pointer relative" id="tier-box-3" onclick="selectTierQuantity(20)">
+<span class="absolute -top-2 right-2 bg-secondary text-on-secondary font-label-eyebrow text-[10px] px-1.5 py-0.2 rounded uppercase">
+                -15% Pallet
+              </span>
+<div class="flex justify-between items-center mb-1">
+<span class="font-label-md text-label-md text-on-surface font-semibold">20+ paquetes</span>
+</div>
+<div class="font-headline-sm text-headline-sm text-secondary font-bold">$ 53.040</div>
+<p class="font-data-tabular text-[11px] text-on-surface-variant mt-0.5">Ahorro: $ 9.360/paq</p>
+</div>
+</div>
+</div>
+<!-- Interactive Guillotine Cutting Box -->
+<div class="bg-surface-container-low rounded-xl p-space-md shadow-sm">
+<div class="flex items-center justify-between pb-space-sm">
+<div class="flex items-center gap-space-sm">
+<div class="w-8 h-8 rounded bg-primary-container text-on-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[18px]">content_cut</span>
+</div>
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Servicio de Guillotina Computarizada</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Entregamos tus pliegos fraccionados con precisión micrométrica</p>
+</div>
+</div>
+</div>
+<!-- Switch Mode: Full Ream vs Custom Cut -->
+<div class="grid grid-cols-2 gap-space-xs p-1 bg-surface-container rounded-lg my-space-sm">
+<button class="py-space-xs font-label-md text-label-md rounded bg-surface-container-lowest text-on-surface shadow-sm transition-all flex items-center justify-center gap-1.5" id="mode-whole" onclick="setCuttingMode(false)" type="button">
+<span class="material-symbols-outlined text-[16px]">check_box_outline_blank</span>
+              Pliego Entero (70 x 100 cm)
+            </button>
+<button class="py-space-xs font-label-md text-label-md rounded text-on-surface-variant hover:text-on-surface transition-all flex items-center justify-center gap-1.5" id="mode-cut" onclick="setCuttingMode(true)" type="button">
+<span class="material-symbols-outlined text-[16px]">content_cut</span>
+              Cortar a Medida Programada
+            </button>
+</div>
+<!-- Collapsible Interactive Sub-Form -->
+<div class="hidden flex-col gap-space-sm pt-space-xs" id="cutting-form-container">
+<div class="grid grid-cols-1 sm:grid-cols-12 gap-space-sm items-center">
+<!-- Quick Preset Select -->
+<div class="sm:col-span-5 flex flex-col gap-1">
+<label class="font-label-eyebrow text-label-eyebrow uppercase text-on-surface-variant" for="preset-cut">Formato Frecuente</label>
+<select class="w-full bg-surface-container-lowest px-space-sm py-2 rounded font-body-sm text-body-sm text-on-surface focus:outline-none shadow-sm" id="preset-cut" onchange="applyPresetCut(this.value)">
+<option value="custom">Medida Manual...</option>
+<option selected="" value="sra3">SRA3 (32 × 45 cm) · Digital</option>
+<option value="a3">A3 Estándar (29,7 × 42 cm)</option>
+<option value="a4">A4 Oficio / Carpeta (21 × 29,7 cm)</option>
+<option value="half">Medio Pliego (50 × 70 cm)</option>
+</select>
+</div>
+<!-- Manual Dimension Inputs -->
+<div class="sm:col-span-7 grid grid-cols-2 gap-space-xs">
+<div class="flex flex-col gap-1">
+<label class="font-label-eyebrow text-label-eyebrow uppercase text-on-surface-variant" for="cut-width">Ancho (cm)</label>
+<input class="w-full bg-surface-container-lowest px-space-sm py-2 rounded font-data-tabular text-body-sm text-on-surface focus:outline-none shadow-sm" id="cut-width" oninput="calculateYield()" placeholder="Ancho" step="0.5" type="number" value="32"/>
+</div>
+<div class="flex flex-col gap-1">
+<label class="font-label-eyebrow text-label-eyebrow uppercase text-on-surface-variant" for="cut-height">Alto (cm)</label>
+<input class="w-full bg-surface-container-lowest px-space-sm py-2 rounded font-data-tabular text-body-sm text-on-surface focus:outline-none shadow-sm" id="cut-height" oninput="calculateYield()" placeholder="Alto" step="0.5" type="number" value="45"/>
+</div>
+</div>
+</div>
+<!-- Yield & Cut Visualizer Bar -->
+<div class="p-space-sm rounded-lg bg-surface-container-lowest flex flex-col sm:flex-row items-center justify-between gap-space-sm shadow-sm">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-secondary text-[22px]">analytics</span>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-semibold" id="yield-summary">Rinde 4 cortes por hoja base (92% de aprovechamiento)</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant" id="yield-total">Obtendrás <strong>2.000 hojas cortadas</strong> con el pedido actual (5 paq × 100 pliegos).</span>
+</div>
+</div>
+<div class="flex items-center gap-1 font-label-eyebrow text-label-eyebrow uppercase bg-secondary-fixed text-on-secondary-fixed-variant px-space-sm py-1 rounded">
+                Refile Limpio Incluido
+              </div>
+</div>
+<!-- Waste and Delivery Options -->
+<div class="flex items-center justify-between flex-wrap gap-space-sm text-body-sm">
+<label class="flex items-center gap-2 cursor-pointer text-on-surface font-body-sm">
+<input checked="" class="rounded accent-primary w-4 h-4 cursor-pointer" type="checkbox"/>
+<span>Retirar sobrantes y despachar solo el corte limpio</span>
+</label>
+<div class="flex items-center gap-1.5 font-label-md text-label-md text-primary">
+<span class="material-symbols-outlined text-[18px]">add_circle</span>
+<span>+$ 3.500 por bajada programada</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Quantity Selector, Order Calculations & Main Actions -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-md flex flex-col gap-space-md">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-md">
+<!-- Stepper Controller -->
+<div class="flex items-center gap-space-sm">
+<div class="flex flex-col">
+<span class="font-label-eyebrow text-label-eyebrow uppercase text-on-surface-variant">Cantidad (Paquetes x100)</span>
+<div class="flex items-center bg-surface-container rounded-lg p-1 mt-1 shadow-inner">
+<button class="w-10 h-10 rounded bg-surface-container-lowest text-on-surface flex items-center justify-center hover:bg-surface-container-high transition-colors shadow-sm focus:outline-none" onclick="modifyQty(-1)" type="button">
+<span class="material-symbols-outlined text-[18px]">remove</span>
+</button>
+<input class="w-16 text-center bg-transparent font-headline-sm text-headline-sm text-on-surface font-bold focus:outline-none" id="input-qty" max="200" min="1" onchange="manualQtyChange(this.value)" type="number" value="5"/>
+<button class="w-10 h-10 rounded bg-surface-container-lowest text-on-surface flex items-center justify-center hover:bg-surface-container-high transition-colors shadow-sm focus:outline-none" onclick="modifyQty(1)" type="button">
+<span class="material-symbols-outlined text-[18px]">add</span>
+</button>
+</div>
+</div>
+<div class="text-body-sm text-on-surface-variant flex flex-col justify-end pt-5">
+<span id="label-total-sheets">= 500 pliegos base</span>
+<span class="text-[11px] font-data-tabular text-secondary">Aplica tarifa 5-19 paq (-8%)</span>
+</div>
+</div>
+<!-- Grand Total Calculation Box -->
+<div class="flex flex-col sm:items-end">
+<span class="font-label-eyebrow text-label-eyebrow uppercase text-on-surface-variant">Subtotal Final Calculado</span>
+<div class="font-headline-xl text-headline-xl text-primary font-bold leading-tight" id="grand-total-display">
+                $ 287.040
+              </div>
+<span class="font-data-tabular text-[11px] text-on-surface-variant">Incluye IVA 21% · Sin flete de guillotina</span>
+</div>
+</div>
+<!-- Action Buttons Group -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-space-sm pt-space-xs">
+<button class="w-full bg-primary hover:bg-primary-container text-on-primary py-space-md px-gutter rounded-lg font-label-md text-label-md flex items-center justify-center gap-space-sm transition-all shadow-md" type="button">
+<span class="material-symbols-outlined text-[20px]">add_shopping_cart</span>
+<span>Agregar al Carrito</span>
+</button>
+<button class="w-full bg-secondary hover:bg-on-secondary-fixed-variant text-on-secondary py-space-md px-gutter rounded-lg font-label-md text-label-md flex items-center justify-center gap-space-sm transition-all shadow-md" type="button">
+<span class="material-symbols-outlined text-[20px]">flash_on</span>
+<span>Comprar Ahora (Factura A)</span>
+</button>
+</div>
+<!-- B2B WhatsApp & Technical Sales Consultation Link -->
+<div class="flex items-center justify-between pt-space-xs border-t-0 bg-surface-container-low px-space-md py-space-sm rounded-lg">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-secondary text-[20px]">support_agent</span>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface">¿Necesitás asesoría de fibrado para packaging o troqueles?</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Atención directa con nuestro equipo de producción en planta</span>
+</div>
+</div>
+<a class="shrink-0 font-label-md text-label-md text-primary hover:text-primary-container font-semibold flex items-center gap-1 transition-colors" href="#">
+<span>Consultar Asesor</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+<!-- TECHNICAL TABS & IN-DEPTH INDUSTRIAL DATA -->
+<div class="w-full mt-space-xl pt-space-md">
+<!-- Tab Header Strip -->
+<div class="flex items-center gap-space-sm overflow-x-auto pb-space-xs">
+<button class="tab-trigger px-space-md py-space-sm rounded-lg font-label-md text-label-md transition-all bg-primary text-on-primary shadow-sm flex items-center gap-2 shrink-0" id="tab-btn-specs" onclick="switchTechTab('specs')" type="button">
+<span class="material-symbols-outlined text-[18px]">tune</span>
+          Especificaciones Técnicas
+        </button>
+<button class="tab-trigger px-space-md py-space-sm rounded-lg font-label-md text-label-md transition-all bg-surface-container text-on-surface-variant hover:text-on-surface flex items-center gap-2 shrink-0" id="tab-btn-usage" onclick="switchTechTab('usage')" type="button">
+<span class="material-symbols-outlined text-[18px]">auto_stories</span>
+          Guía de Impresión y Usos
+        </button>
+<button class="tab-trigger px-space-md py-space-sm rounded-lg font-label-md text-label-md transition-all bg-surface-container text-on-surface-variant hover:text-on-surface flex items-center gap-2 shrink-0" id="tab-btn-logistics" onclick="switchTechTab('logistics')" type="button">
+<span class="material-symbols-outlined text-[18px]">local_shipping</span>
+          Envíos y Logística Industrial
+        </button>
+</div>
+<!-- Tab Content Area -->
+<div class="mt-space-md">
+<!-- PANEL 1: Especificaciones Técnicas (Default Active) -->
+<div class="tab-content block" id="tab-panel-specs">
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
+<!-- Specs Column 1 -->
+<div class="flex flex-col gap-space-sm">
+<h4 class="font-headline-sm text-headline-sm text-primary flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px]">straighten</span>
+                  Parámetros Físicos
+                </h4>
+<div class="space-y-space-xs">
+<div class="flex justify-between py-1 bg-surface-container-low px-space-sm rounded">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Gramaje Nominal:</span>
+<strong class="font-data-tabular text-body-sm text-on-surface">300 g/m² (± 3%)</strong>
+</div>
+<div class="flex justify-between py-1 px-space-sm">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Calibre / Espesor:</span>
+<strong class="font-data-tabular text-body-sm text-on-surface">345 micrones (0,34 mm)</strong>
+</div>
+<div class="flex justify-between py-1 bg-surface-container-low px-space-sm rounded">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Sentido de Fibra:</span>
+<strong class="font-data-tabular text-body-sm text-primary font-bold">Longitudinal (a los 100 cm)</strong>
+</div>
+<div class="flex justify-between py-1 px-space-sm">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Formato Plano:</span>
+<strong class="font-data-tabular text-body-sm text-on-surface">700 × 1000 mm</strong>
+</div>
+<div class="flex justify-between py-1 bg-surface-container-low px-space-sm rounded">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Peso por Paquete (100h):</span>
+<strong class="font-data-tabular text-body-sm text-on-surface">21,00 kg aprox.</strong>
+</div>
+</div>
+</div>
+<!-- Specs Column 2 -->
+<div class="flex flex-col gap-space-sm">
+<h4 class="font-headline-sm text-headline-sm text-primary flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px]">palette</span>
+                  Propiedades Ópticas y Superficie
+                </h4>
+<div class="space-y-space-xs">
+<div class="flex justify-between py-1 bg-surface-container-low px-space-sm rounded">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Blancura ISO:</span>
+<strong class="font-data-tabular text-body-sm text-on-surface">98% ± 1</strong>
+</div>
+<div class="flex justify-between py-1 px-space-sm">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Brillo Gardner (75°):</span>
+<strong class="font-data-tabular text-body-sm text-on-surface">32% (Semi-Mate / Silk)</strong>
+</div>
+<div class="flex justify-between py-1 bg-surface-container-low px-space-sm rounded">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Opacidad:</span>
+<strong class="font-data-tabular text-body-sm text-on-surface">99.2% (No trasluce)</strong>
+</div>
+<div class="flex justify-between py-1 px-space-sm">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Aspereza Bendtsen:</span>
+<strong class="font-data-tabular text-body-sm text-on-surface">25 ml/min (Ultra liso)</strong>
+</div>
+<div class="flex justify-between py-1 bg-surface-container-low px-space-sm rounded">
+<span class="font-body-sm text-body-sm text-on-surface-variant">PH Químico:</span>
+<strong class="font-data-tabular text-body-sm text-on-surface">7.8 (Neutro Alcalino)</strong>
+</div>
+</div>
+</div>
+<!-- Specs Column 3 -->
+<div class="flex flex-col gap-space-sm">
+<h4 class="font-headline-sm text-headline-sm text-primary flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px]">verified_user</span>
+                  Normas &amp; Ensayos Mecánicos
+                </h4>
+<div class="space-y-space-xs">
+<div class="flex justify-between py-1 bg-surface-container-low px-space-sm rounded">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Rigidez Taber MD:</span>
+<strong class="font-data-tabular text-body-sm text-on-surface">42.0 mN·m</strong>
+</div>
+<div class="flex justify-between py-1 px-space-sm">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Rigidez Taber CD:</span>
+<strong class="font-data-tabular text-body-sm text-on-surface">21.5 mN·m</strong>
+</div>
+<div class="flex justify-between py-1 bg-surface-container-low px-space-sm rounded">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Humedad de Estabilidad:</span>
+<strong class="font-data-tabular text-body-sm text-on-surface">5.5% HR acondicionada</strong>
+</div>
+<div class="flex justify-between py-1 px-space-sm">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Compatibilidad Barniz:</span>
+<strong class="font-data-tabular text-body-sm text-secondary">Apto UV sectorizado y polilaminado</strong>
+</div>
+<div class="flex justify-between py-1 bg-surface-container-low px-space-sm rounded">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Resistencia al Hendido:</span>
+<strong class="font-data-tabular text-body-sm text-on-surface">Excelente sin quebre</strong>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- PANEL 2: Guía de Impresión y Usos -->
+<div class="tab-content hidden" id="tab-panel-usage">
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<div class="p-space-md rounded-lg bg-surface-container-low flex flex-col gap-space-sm">
+<div class="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center text-on-primary-fixed-variant">
+<span class="material-symbols-outlined text-[20px]">menu_book</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-on-surface">Tapas de Libros &amp; Revistas</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+                Gramaje insignia para encuadernación rústica (cosida o pur binder). Otorga cuerpo consistente sin arquearse en ambientes húmedos. Admite laminado mate, brillante o soft-touch sin desprendimiento.
+              </p>
+</div>
+<div class="p-space-md rounded-lg bg-surface-container-low flex flex-col gap-space-sm">
+<div class="w-10 h-10 rounded-full bg-secondary-fixed flex items-center justify-center text-on-secondary-fixed-variant">
+<span class="material-symbols-outlined text-[20px]">package_2</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-on-surface">Packaging Cosmético &amp; Farma</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+                Excelente aptitud para estuches de perfumes, cremas, medicamentos y cajas exhibidoras. Permite troquelado complejo y relieve cuño seco pronunciado gracias a sus fibras largas seleccionadas.
+              </p>
+</div>
+<div class="p-space-md rounded-lg bg-surface-container-low flex flex-col gap-space-sm">
+<div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[20px]">badge</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-on-surface">Carpetas y Tarjetas Premium</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+                Carpetas institucionales con solapa y tarjetas comerciales pesadas. Admite hot-stamping dorado/plateado y serigrafía UV sectorizada brillante de alto registro.
+              </p>
+</div>
+</div>
+</div>
+<!-- PANEL 3: Envíos y Logística Industrial -->
+<div class="tab-content hidden" id="tab-panel-logistics">
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col gap-space-md">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<div class="flex items-start gap-space-sm">
+<span class="material-symbols-outlined text-primary text-[28px] mt-1 shrink-0">local_shipping</span>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-semibold">Flota Propia en AMBA</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Camiones equipados con plataforma hidráulica. Entregas en imprentas de CABA y Gran Buenos Aires dentro de las 24/48 horas hábiles.</span>
+</div>
+</div>
+<div class="flex items-start gap-space-sm">
+<span class="material-symbols-outlined text-secondary text-[28px] mt-1 shrink-0">pallet</span>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-semibold">Palletizado Industrial</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Los bultos se estiban sobre pallets Arlog normalizados de madera tratada, enfardados en film stretch negro y zunchados con cantoneras de protección.</span>
+</div>
+</div>
+<div class="flex items-start gap-space-sm">
+<span class="material-symbols-outlined text-tertiary text-[28px] mt-1 shrink-0">flight_takeoff</span>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-semibold">Expresos al Interior</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Despacho bonificado sin cargo hasta el expreso en Villa Soldati / Pompeya que elija el cliente para el interior del país.</span>
+</div>
+</div>
+</div>
+<div class="p-space-sm rounded-lg bg-surface-container flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-primary text-[20px]">warehouse</span>
+<span class="font-body-sm text-body-sm text-on-surface">Retiro directo en Depósito Avellaneda (Av. Hipólito Yrigoyen 1820) disponible de Lun a Vie de 8:30 a 16:30 hs.</span>
+</div>
+<span class="font-label-eyebrow text-label-eyebrow uppercase bg-surface-container-lowest px-space-sm py-1 rounded text-on-surface-variant">Sin Costo de Retiro</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Related Papers Drawer/Strip -->
+<div class="mt-space-xl pt-space-md mb-space-xl">
+<div class="flex items-center justify-between mb-space-md">
+<div>
+<span class="font-label-eyebrow text-label-eyebrow uppercase text-primary font-bold">Alternativas y Complementos</span>
+<h3 class="font-headline-md text-headline-md text-on-surface">Otros Gramajes y Variedades Disponibles</h3>
+</div>
+<a class="font-label-md text-label-md text-primary hover:text-primary-container flex items-center gap-1 transition-colors" href="#">
+<span>Ver toda la línea de cartulinas</span>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</a>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter">
+<!-- Related Item 1 -->
+<div class="p-space-sm rounded-xl bg-surface-container-lowest shadow-sm flex flex-col justify-between group hover:shadow-md transition-shadow">
+<div>
+<div class="aspect-[4/3] rounded-lg overflow-hidden bg-surface-container-low mb-space-sm">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="Sample sheet of illustration paper 150g semi matte for brochure printing with soft reflection" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDvVbQVl-ran_-ZZUZN9fItrtFYLP46HO35L3suxTC0chUch--4nqagg1srG1MnIEXhKKDjWDS2lOGOTmibuauUpmQejZ0Pdbzdu8ijKSdlg7UOU6As2f_MRoQHkQlWu40lF45LkYp2dOSZyUMhECs3r7do06LoB8a37o5JtLD4a1Di0F88otXkWxyRa1MSXIVYJkzi8AXDir31UYTuWQlhqAR3_rBdRPF3zCBs6Qu03eqGh6gA9WKTKA"/>
+</div>
+<span class="font-label-eyebrow text-label-eyebrow uppercase text-secondary font-bold">Línea Liviana</span>
+<h4 class="font-headline-sm text-headline-sm text-on-surface mt-0.5">Ilustración Semi-Mate 150 grs</h4>
+<p class="font-data-tabular text-[12px] text-on-surface-variant">Pliego 70 × 100 cm · Paq 250h</p>
+</div>
+<div class="flex items-center justify-between mt-space-md pt-space-xs border-t-0">
+<span class="font-label-md text-label-md font-bold text-on-surface">$ 41.200</span>
+<button aria-label="Ver producto 150g" class="w-8 h-8 rounded bg-surface-container flex items-center justify-center text-primary hover:bg-primary hover:text-on-primary transition-colors" type="button">
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Related Item 2 -->
+<div class="p-space-sm rounded-xl bg-surface-container-lowest shadow-sm flex flex-col justify-between group hover:shadow-md transition-shadow">
+<div>
+<div class="aspect-[4/3] rounded-lg overflow-hidden bg-surface-container-low mb-space-sm">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="High gloss 300g cardstock paper stack with sharp mirror reflection of studio lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCUMTtisCEqh04ZUegUxE5GkX04_a_Pyf_xr0vqODSGYeOmfZw8dsDxpk_O-JaqniWjn-XXD63bYufT38VYc16EHn0o9D5cIRVlhk5VcAOCUxeub-oFXdqnb-6SRNTilDX8y8dm3JgNIH0CIeSt1hevSCUhbiJd6sEkCAqaQJaYFRAj-dfm84CfYQaJwX9GWhMB8rptLZ7fA_Qk32gC71ZqudfClna3Nl5a7lQf4yA2BkaGAO9YeHyaqQ"/>
+</div>
+<span class="font-label-eyebrow text-label-eyebrow uppercase text-primary font-bold">Acabado Brillante</span>
+<h4 class="font-headline-sm text-headline-sm text-on-surface mt-0.5">Ilustración Brillante 300 grs</h4>
+<p class="font-data-tabular text-[12px] text-on-surface-variant">Pliego 70 × 100 cm · Paq 100h</p>
+</div>
+<div class="flex items-center justify-between mt-space-md pt-space-xs border-t-0">
+<span class="font-label-md text-label-md font-bold text-on-surface">$ 62.400</span>
+<button aria-label="Ver producto 300g brillante" class="w-8 h-8 rounded bg-surface-container flex items-center justify-center text-primary hover:bg-primary hover:text-on-primary transition-colors" type="button">
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Related Item 3 -->
+<div class="p-space-sm rounded-xl bg-surface-container-lowest shadow-sm flex flex-col justify-between group hover:shadow-md transition-shadow">
+<div>
+<div class="aspect-[4/3] rounded-lg overflow-hidden bg-surface-container-low mb-space-sm">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="Triplex cardboard coated with grey back for folding carton pharmaceutical packaging box sample" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDmkHwfeYqmDsMpKAQJPbDcosNNMKfPNOSwFUhauZImDYmxMamc2tKez9RCA4MRan7lsiz2iMD9XjAaWBCu4nGtBKlFJqLrzj2o-big_HjuDIDf5WVUiYIyYDehlY0lBQV1Z6CrQksoZf2lfPdsA-Xzsx4nC-3Z4AesgUXzvrpgH8z29sdqP0VnpB67py3LfKag5k-yGv4PZsCGxIWWupYiBn5uz_l4u-aYLqaDFRYQQ5sCmD_ImKjBxg"/>
+</div>
+<span class="font-label-eyebrow text-label-eyebrow uppercase text-tertiary font-bold">Packaging Pesado</span>
+<h4 class="font-headline-sm text-headline-sm text-on-surface mt-0.5">Cartulina Triplex Encapada 350g</h4>
+<p class="font-data-tabular text-[12px] text-on-surface-variant">Pliego 72 × 102 cm · Paq 100h</p>
+</div>
+<div class="flex items-center justify-between mt-space-md pt-space-xs border-t-0">
+<span class="font-label-md text-label-md font-bold text-on-surface">$ 71.900</span>
+<button aria-label="Ver producto triplex" class="w-8 h-8 rounded bg-surface-container flex items-center justify-center text-primary hover:bg-primary hover:text-on-primary transition-colors" type="button">
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Related Item 4 -->
+<div class="p-space-sm rounded-xl bg-surface-container-lowest shadow-sm flex flex-col justify-between group hover:shadow-md transition-shadow">
+<div>
+<div class="aspect-[4/3] rounded-lg overflow-hidden bg-surface-container-low mb-space-sm">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="Chambril high bulk premium uncoated white offset paper ream for notebooks and book covers" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDXia70G6a3k0nRqdobfzIaFijK7LmHHx5mAT-KAc8E9wF4J1W161QpcLd8sAM38gLfrqnZNKv1jIqoQh2EVqolXxzWRc9g_7a8P9CPIwgi5ki_4gk2QQXa_WLa_fhXZWJejqkSFYPfp0o1_0iZDiPdRRipUFAHQcJh7lYlyVxPx9i4RcFDGUTdDPWxZbo39ljFY3-yg_E1Nfs6rQXySgVRaqJPgKrd0pvfvQe96IdLzd5Ka6hym5zL4g"/>
+</div>
+<span class="font-label-eyebrow text-label-eyebrow uppercase text-secondary font-bold">Obra Chambril</span>
+<h4 class="font-headline-sm text-headline-sm text-on-surface mt-0.5">Chambril Premium Offset 240 grs</h4>
+<p class="font-data-tabular text-[12px] text-on-surface-variant">Pliego 70 × 100 cm · Paq 125h</p>
+</div>
+<div class="flex items-center justify-between mt-space-md pt-space-xs border-t-0">
+<span class="font-label-md text-label-md font-bold text-on-surface">$ 58.300</span>
+<button aria-label="Ver chambril 240g" class="w-8 h-8 rounded bg-surface-container flex items-center justify-center text-primary hover:bg-primary hover:text-on-primary transition-colors" type="button">
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Interactive State Engine Script -->
+<script>
+    // State variables
+    let currentQty = 5;
+    let isCuttingActive = false;
+    const baseSheetCount = 100;
+    const cutCostFlat = 3500;
+
+    // Price tiers
+    // 1-4: 62400
+    // 5-19: 57408
+    // 20+: 53040
+    function getUnitPrice(qty) {
+      if (qty >= 20) return 53040;
+      if (qty >= 5) return 57408;
+      return 62400;
+    }
+
+    function formatCurrency(val) {
+      return '$ ' + val.toLocaleString('es-AR');
+    }
+
+    function updateUiPrices() {
+      const unit = getUnitPrice(currentQty);
+      const sheetPrice = Math.round(unit / baseSheetCount);
+      const subtotalPaper = unit * currentQty;
+      const cuttingExtra = isCuttingActive ? cutCostFlat : 0;
+      const grandTotal = subtotalPaper + cuttingExtra;
+
+      // Update unit display
+      const dispUnit = document.getElementById('display-unit-price');
+      if (dispUnit) dispUnit.textContent = formatCurrency(unit);
+
+      const dispSheet = document.getElementById('display-sheet-price');
+      if (dispSheet) dispSheet.textContent = formatCurrency(sheetPrice) + ' por pliego';
+
+      // Update grand total
+      const dispTotal = document.getElementById('grand-total-display');
+      if (dispTotal) dispTotal.textContent = formatCurrency(grandTotal);
+
+      // Update sheet count label
+      const totalSheets = currentQty * baseSheetCount;
+      const labelSheets = document.getElementById('label-total-sheets');
+      if (labelSheets) labelSheets.textContent = '= ' + totalSheets.toLocaleString('es-AR') + ' pliegos base';
+
+      // Update active tier style
+      const t1 = document.getElementById('tier-box-1');
+      const t2 = document.getElementById('tier-box-2');
+      const t3 = document.getElementById('tier-box-3');
+      if (t1 && t2 && t3) {
+        [t1, t2, t3].forEach(el => el.classList.remove('active-tier', 'ring-2', 'ring-primary', 'bg-surface-container-lowest'));
+        
+        if (currentQty >= 20) {
+          t3.classList.add('active-tier', 'ring-2', 'ring-primary', 'bg-surface-container-lowest');
+        } else if (currentQty >= 5) {
+          t2.classList.add('active-tier', 'ring-2', 'ring-primary', 'bg-surface-container-lowest');
+        } else {
+          t1.classList.add('active-tier', 'ring-2', 'ring-primary', 'bg-surface-container-lowest');
+        }
+      }
+
+      calculateYield();
+    }
+
+    function modifyQty(delta) {
+      const newQty = currentQty + delta;
+      if (newQty >= 1 && newQty <= 200) {
+        currentQty = newQty;
+        document.getElementById('input-qty').value = currentQty;
+        updateUiPrices();
+      }
+    }
+
+    function manualQtyChange(val) {
+      const parsed = parseInt(val, 10);
+      if (!isNaN(parsed) && parsed >= 1 && parsed <= 500) {
+        currentQty = parsed;
+      } else {
+        currentQty = 1;
+        document.getElementById('input-qty').value = 1;
+      }
+      updateUiPrices();
+    }
+
+    function selectTierQuantity(qty) {
+      currentQty = qty;
+      document.getElementById('input-qty').value = currentQty;
+      updateUiPrices();
+    }
+
+    // Cutting Switcher
+    function setCuttingMode(active) {
+      isCuttingActive = active;
+      const wholeBtn = document.getElementById('mode-whole');
+      const cutBtn = document.getElementById('mode-cut');
+      const formBox = document.getElementById('cutting-form-container');
+
+      if (active) {
+        cutBtn.classList.remove('text-on-surface-variant');
+        cutBtn.classList.add('bg-surface-container-lowest', 'text-on-surface', 'shadow-sm');
+        wholeBtn.classList.remove('bg-surface-container-lowest', 'text-on-surface', 'shadow-sm');
+        wholeBtn.classList.add('text-on-surface-variant');
+        formBox.classList.remove('hidden');
+        formBox.classList.add('flex');
+      } else {
+        wholeBtn.classList.remove('text-on-surface-variant');
+        wholeBtn.classList.add('bg-surface-container-lowest', 'text-on-surface', 'shadow-sm');
+        cutBtn.classList.remove('bg-surface-container-lowest', 'text-on-surface', 'shadow-sm');
+        cutBtn.classList.add('text-on-surface-variant');
+        formBox.classList.remove('flex');
+        formBox.classList.add('hidden');
+      }
+      updateUiPrices();
+    }
+
+    function applyPresetCut(val) {
+      const wInput = document.getElementById('cut-width');
+      const hInput = document.getElementById('cut-height');
+      if (val === 'sra3') {
+        wInput.value = 32;
+        hInput.value = 45;
+      } else if (val === 'a3') {
+        wInput.value = 29.7;
+        hInput.value = 42;
+      } else if (val === 'a4') {
+        wInput.value = 21;
+        hInput.value = 29.7;
+      } else if (val === 'half') {
+        wInput.value = 50;
+        hInput.value = 70;
+      }
+      calculateYield();
+    }
+
+    function calculateYield() {
+      const w = parseFloat(document.getElementById('cut-width')?.value || 32);
+      const h = parseFloat(document.getElementById('cut-height')?.value || 45);
+      if (w <= 0 || h <= 0) return;
+
+      // Base sheet is 70 x 100 cm
+      const sheetW = 70;
+      const sheetH = 100;
+
+      // Orientation 1: w along 70, h along 100
+      const cuts1 = Math.floor(sheetW / w) * Math.floor(sheetH / h);
+      // Orientation 2: h along 70, w along 100
+      const cuts2 = Math.floor(sheetW / h) * Math.floor(sheetH / w);
+
+      const maxCuts = Math.max(cuts1, cuts2, 1);
+      const usedArea = maxCuts * (w * h);
+      const totalSheetArea = sheetW * sheetH;
+      const yieldPct = Math.min(Math.round((usedArea / totalSheetArea) * 100), 99);
+
+      const totalHojas = maxCuts * (currentQty * baseSheetCount);
+
+      const summary = document.getElementById('yield-summary');
+      const total = document.getElementById('yield-total');
+      if (summary) {
+        summary.textContent = `Rinde ${maxCuts} pliegos por hoja base (${yieldPct}% de aprovechamiento)`;
+      }
+      if (total) {
+        total.innerHTML = `Obtendrás <strong>${totalHojas.toLocaleString('es-AR')} hojas cortadas</strong> con el pedido actual (${currentQty} paq × 100 pliegos).`;
+      }
+    }
+
+    // Tab switcher
+    function switchTechTab(tab) {
+      const tabs = ['specs', 'usage', 'logistics'];
+      tabs.forEach(t => {
+        const btn = document.getElementById(`tab-btn-${t}`);
+        const panel = document.getElementById(`tab-panel-${t}`);
+        if (t === tab) {
+          btn.classList.remove('bg-surface-container', 'text-on-surface-variant');
+          btn.classList.add('bg-primary', 'text-on-primary', 'shadow-sm');
+          panel.classList.remove('hidden');
+          panel.classList.add('block');
+        } else {
+          btn.classList.remove('bg-primary', 'text-on-primary', 'shadow-sm');
+          btn.classList.add('bg-surface-container', 'text-on-surface-variant');
+          panel.classList.remove('block');
+          panel.classList.add('hidden');
+        }
+      });
+    }
+
+    // Thumbnail selector preview
+    function selectThumb(index, btn) {
+      document.querySelectorAll('.thumb-btn').forEach(b => {
+        b.classList.remove('ring-2', 'ring-primary');
+      });
+      btn.classList.add('ring-2', 'ring-primary');
+    }
+
+    // Run initial calculate on mount
+    updateUiPrices();
+  </script>
+</div></main><a aria-label="Contactar por WhatsApp" class="fixed bottom-space-lg right-space-lg z-50 flex items-center gap-space-sm bg-secondary text-on-secondary px-space-md py-space-sm rounded-full shadow-[0_12px_24px_-6px_rgba(74,74,74,0.08)] hover:bg-on-secondary-fixed-variant transition-all" href="#"><span class="material-symbols-outlined text-[20px]">chat</span><span class="font-label-md text-label-md hidden sm:inline">Asesor en línea</span></a><footer class="w-full bg-surface-container-high text-on-surface"><div class="max-w-[1280px] mx-auto px-margin-sm md:px-gutter py-space-xl"><div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter"><div class="space-y-space-md"><div class="flex items-center gap-space-sm"><img alt="logo-bertolin-1.png" class="h-7 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1VpImI8v3Kh-IfTKaC5DQkSXtS2DBB016vm_cb-uRJSj5HgI2UHoL3cF8QjPtKnvEI5l6EBgdt_9vqHTI9UWfz5-Yfwj5-y3ioIyOBerR9L44HrZmX5IikuMmLAeLsUiwwxWosSHOqH3HEwnFPkWh2oRdIu4byAy4hYkW2B6W_AayoHaLYs46MwhmUHI-4ldhhvLXuG7OeThg9cykGAZY23VgEZmWiHqDganbbKdfLWjyVopTnEO1yVXN-rz_wGL6x3ka-62mx-X1E"/><span class="font-headline-sm text-headline-sm text-primary">Papelera Bertolín</span></div><p class="font-body-sm text-body-sm text-on-surface-variant">Desde 1980 junto a imprentas, editoriales, librerías y diseñadores. Especialistas en distribución mayorista, corte programado y logística corporativa.</p><div class="space-y-space-xs font-body-sm text-body-sm text-on-surface-variant"><p class="flex items-start gap-space-xs"><span class="material-symbols-outlined text-[16px] text-primary shrink-0 mt-1">location_on</span><span>Planta Logística: Av. Hipólito Yrigoyen 1820, Avellaneda</span></p><p class="flex items-start gap-space-xs"><span class="material-symbols-outlined text-[16px] text-primary shrink-0 mt-1">store</span><span>Centro de Entrega CABA: Distrito Gráfico Barracas</span></p></div></div><div class="space-y-space-md"><h4 class="font-headline-sm text-headline-sm text-on-surface">Catálogo Técnico</h4><ul class="space-y-space-xs font-body-sm text-body-sm text-on-surface-variant"><li><a class="hover:text-primary transition-colors" href="#">Resmas Reprografía (A4, Oficio, Carta)</a></li><li><a class="hover:text-primary transition-colors" href="#">Obra Primera Calidad y Satinados</a></li><li><a class="hover:text-primary transition-colors" href="#">Cartulinas Encapadas y Triplex</a></li><li><a class="hover:text-primary transition-colors" href="#">Papeles Especiales Chambril y Kraft</a></li><li><a class="hover:text-primary transition-colors" href="#">Laminados, Adhesivos y Sintéticos</a></li></ul></div><div class="space-y-space-md"><h4 class="font-headline-sm text-headline-sm text-on-surface">Servicios Industriales</h4><ul class="space-y-space-xs font-body-sm text-body-sm text-on-surface-variant"><li><a class="hover:text-primary transition-colors" href="#">Corte a medida en guillotina computarizada</a></li><li><a class="hover:text-primary transition-colors" href="#">Distribución propia con camiones en AMBA</a></li><li><a class="hover:text-primary transition-colors" href="#">Despacho de pallets cerrados a expresos</a></li><li><a class="hover:text-primary transition-colors" href="#">Asesoría técnica en gramajes y fibras</a></li><li><a class="hover:text-primary transition-colors" href="#">Muestrarios para estudios y editoriales</a></li></ul></div><div class="space-y-space-md"><h4 class="font-headline-sm text-headline-sm text-on-surface">Atención Comercial</h4><ul class="space-y-space-xs font-body-sm text-body-sm text-on-surface-variant"><li><span class="font-label-md text-label-md text-on-surface">Lunes a Viernes:</span> 8:00 a 17:30 hs</li><li><span class="font-label-md text-label-md text-on-surface">Venta Telefónica:</span> (011) 4201-1180 / 1184</li><li><span class="font-label-md text-label-md text-on-surface">Facturación:</span> Facturas A y B discriminadas</li><li><span class="font-label-md text-label-md text-on-surface">Cobranzas:</span> eCheq, Transferencia, Cuentas Corrientes</li></ul></div></div></div><div class="bg-surface-container-highest py-space-md"><div class="max-w-[1280px] mx-auto px-margin-sm md:px-gutter flex flex-col md:flex-row items-center justify-between gap-space-sm text-center md:text-left"><p class="font-body-sm text-body-sm text-on-surface-variant">© 2025 Papelera Bertolín S.R.L. Todos los derechos reservados. Industria Gráfica Argentina.</p><div class="flex items-center gap-space-md font-body-sm text-body-sm text-on-surface-variant"><a class="hover:text-primary transition-colors" href="#">Términos Mayoristas</a><a class="hover:text-primary transition-colors" href="#">Política de Envíos</a><a class="hover:text-primary transition-colors" href="#">CUIT: 30-58472910-7</a></div></div></div></footer></body></html>
