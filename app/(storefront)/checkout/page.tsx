@@ -1,24 +1,147 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useCart } from '@/context/CartContext'
+import { supabase, getShippingZones, type ShippingZone } from '@/lib/supabase'
+import { findShippingZone } from '@/lib/shipping'
 
 export default function CheckoutPage() {
-  const { cart, totalItems, cartTotal } = useCart()
+  const { cart, totalItems, cartTotal, clearCart } = useCart()
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [showPopup, setShowPopup] = useState(false)
-  const [hasFile, setHasFile] = useState(false)
+  const [file, setFile] = useState<File | null>(null)
+  const [createdOrderId, setCreatedOrderId] = useState<string>('#PB-1051')
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isUploading, setIsUploading] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
 
-  // Calculos simulados
+  // Form State
+  const [formData, setFormData] = useState({
+    name: '',
+    docType: 'CUIT / CUIL',
+    docNumber: '',
+    email: '',
+    phone: '',
+    address: '',
+    postalCode: '',
+  })
+
+  const [zones, setZones] = useState<ShippingZone[]>([])
+  useEffect(() => {
+    getShippingZones().then(setZones)
+  }, [])
+
+  // Calculos (el servidor los recalcula al crear el pedido)
   const safeTotal = cartTotal || 0
   const subtotalNeto = safeTotal / 1.21
   const iva = safeTotal - subtotalNeto
-  const envio = safeTotal > 0 ? 24640 : 0
+  const zone = findShippingZone(zones, formData.postalCode)
+  const envio = safeTotal > 0 && zone ? Number(zone.price) : 0
+  const envioPendiente = safeTotal > 0 && !zone
   const totalFinal = safeTotal > 0 ? (safeTotal + envio) : 0
 
   const formatMoney = (amount: number) =>
     new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS', maximumFractionDigits: 0 }).format(amount)
+
+  const handleInputChange = (field: string, value: string) => {
+    setFormData((prev) => ({ ...prev, [field]: value }))
+    setErrorMessage('')
+  }
+
+  // Handle Order Creation
+  const handleConfirmOrder = async () => {
+    if (!formData.name.trim()) {
+      setErrorMessage('Por favor ingresá tu nombre o razón social.')
+      return
+    }
+    if (!formData.email.trim()) {
+      setErrorMessage('Por favor ingresá tu correo electrónico.')
+      return
+    }
+    if (!formData.phone.trim()) {
+      setErrorMessage('Por favor ingresá tu WhatsApp o teléfono de contacto.')
+      return
+    }
+    if (!formData.address.trim()) {
+      setErrorMessage('Por favor ingresá tu domicilio de entrega.')
+      return
+    }
+
+    try {
+      setIsSubmitting(true)
+      setErrorMessage('')
+
+      // 1. Create order + items (RPC: guests cannot read/write tables directly)
+      const { data: newOrderId, error: orderError } = await supabase.rpc('create_order', {
+        p_order: {
+          customer_name: formData.name,
+          customer_email: formData.email,
+          customer_phone: formData.phone,
+          customer_cuit: formData.docNumber ? `${formData.docType}: ${formData.docNumber}` : null,
+          shipping_address: formData.address,
+          shipping_city: 'CABA / GBA',
+          shipping_postal_code: formData.postalCode,
+        },
+        p_items: cart.map((item) => ({
+          product_id: item.id,
+          quantity: item.quantity,
+        })),
+      })
+
+      if (orderError || !newOrderId) {
+        console.error('Error creating order:', orderError)
+        setErrorMessage('No pudimos registrar tu pedido. Por favor intentá nuevamente.')
+        return
+      }
+      setCreatedOrderId(`#${newOrderId}`)
+
+      // 3. Clear cart and show confirmation screen
+      clearCart()
+      setIsSubmitted(true)
+    } catch (err: any) {
+      console.error('Submission error:', err)
+      setErrorMessage('Ocurrió un error al procesar el pedido. Por favor intenta nuevamente.')
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
+  // Handle Receipt Upload
+  const handleUploadReceipt = async () => {
+    if (!file) return
+
+    try {
+      setIsUploading(true)
+      const cleanId = createdOrderId.replace('#', '')
+      const fileExt = file.name.split('.').pop()
+      const fileName = `${cleanId}/${Date.now()}.${fileExt}`
+
+      // Upload to Supabase Storage
+      const { data: uploadData, error: uploadError } = await supabase.storage
+        .from('receipts')
+        .upload(fileName, file)
+
+      let receiptUrl = ''
+      if (!uploadError && uploadData) {
+        // Private bucket: store the object path; the admin opens it via a signed URL
+        receiptUrl = uploadData.path
+      }
+
+      // Update Order Status in Supabase
+      await supabase.rpc('attach_receipt', {
+        p_order_id: cleanId,
+        p_receipt_url: receiptUrl || file.name,
+      })
+
+      setShowPopup(true)
+    } catch (err) {
+      console.error('Error uploading receipt:', err)
+      setShowPopup(true)
+    } finally {
+      setIsUploading(false)
+    }
+  }
 
   if (isSubmitted) {
     return (
@@ -30,7 +153,7 @@ export default function CheckoutPage() {
             </div>
             <h1 className="font-headline-lg text-headline-lg text-on-surface">¡Gracias por tu compra!</h1>
             <p className="font-body-md text-body-md text-on-surface-variant mt-2">
-              Tu número de pedido es <strong className="text-primary font-data-tabular">#PB-1049</strong>
+              Tu número de pedido es <strong className="text-primary font-data-tabular">{createdOrderId}</strong>
             </p>
           </div>
 
@@ -69,22 +192,37 @@ export default function CheckoutPage() {
                 Subir Comprobante de Transferencia
               </label>
               <p className="font-body-sm text-body-sm text-on-surface-variant mb-space-md">
-                Adjuntá el PDF o captura de pantalla de la transferencia para agilizar el despacho.
+                Adjuntá el comprobante (PDF o imagen) para agilizar la validación del pedido.
               </p>
               <input 
                 type="file" 
-                onChange={(e) => setHasFile(e.target.files && e.target.files.length > 0)}
+                accept="image/*,application/pdf"
+                onChange={(e) => setFile(e.target.files && e.target.files[0] ? e.target.files[0] : null)}
                 className="block w-full max-w-xs mx-auto text-body-sm text-on-surface-variant file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-label-md file:font-bold file:bg-primary file:text-on-primary hover:file:bg-primary-container hover:file:text-on-primary-container transition-colors cursor-pointer" 
               />
+              {file && (
+                <p className="text-xs text-primary font-semibold mt-2">
+                  Archivo seleccionado: {file.name}
+                </p>
+              )}
             </div>
             
             <button 
-              onClick={() => setShowPopup(true)}
-              disabled={!hasFile}
-              className={`w-full py-space-md rounded-xl font-headline-sm text-headline-sm font-bold tracking-wide transition-all shadow-sm flex items-center justify-center gap-space-sm ${hasFile ? 'bg-primary hover:bg-primary-container text-on-primary scale-100 hover:scale-[1.02]' : 'bg-surface-container-high text-on-surface-variant cursor-not-allowed opacity-70'}`}
+              onClick={handleUploadReceipt}
+              disabled={!file || isUploading}
+              className={`w-full py-space-md rounded-xl font-headline-sm text-headline-sm font-bold tracking-wide transition-all shadow-sm flex items-center justify-center gap-space-sm ${file && !isUploading ? 'bg-primary hover:bg-primary-container text-on-primary scale-100 hover:scale-[1.02]' : 'bg-surface-container-high text-on-surface-variant cursor-not-allowed opacity-70'}`}
             >
-              <span className="material-symbols-outlined">send</span>
-              Enviar comprobante
+              {isUploading ? (
+                <>
+                  <span className="material-symbols-outlined animate-spin">progress_activity</span>
+                  Subiendo comprobante...
+                </>
+              ) : (
+                <>
+                  <span className="material-symbols-outlined">send</span>
+                  Enviar comprobante
+                </>
+              )}
             </button>
           </div>
         </div>
@@ -102,7 +240,7 @@ export default function CheckoutPage() {
               </p>
               <div className="space-y-space-sm">
                 <a 
-                  href={`https://wa.me/5491142011180?text=Hola,%20acabo%20de%20hacer%20el%20pedido%20%23PB-1049%20y%20ya%20envi%C3%A9%20el%20comprobante.`}
+                  href={`https://wa.me/5491142011180?text=Hola,%20acabo%20de%20hacer%20el%20pedido%20${encodeURIComponent(createdOrderId)}%20y%20ya%20envi%C3%A9%20el%20comprobante.`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full flex items-center justify-center gap-space-sm bg-[#25D366] hover:bg-[#1DA851] text-white py-space-sm px-space-md rounded-lg font-label-md transition-colors"
@@ -155,7 +293,7 @@ export default function CheckoutPage() {
                   <div className="flex flex-col min-w-0">
                     <span className="font-label-eyebrow text-label-eyebrow uppercase text-secondary">Paso 01</span>
                     <span className="font-headline-sm text-headline-sm text-on-surface truncate">1. Carrito</span>
-                    <span className="font-data-tabular text-data-tabular text-on-surface-variant">Completado · {totalItems} líneas</span>
+                    <span className="font-data-tabular text-data-tabular text-on-surface-variant">Completado · {totalItems} artículos</span>
                   </div>
                 </div>
                 <div className="flex items-center gap-space-md p-space-sm rounded-lg bg-primary-fixed">
@@ -189,6 +327,13 @@ export default function CheckoutPage() {
               {/* LEFT COLUMN: Forms */}
               <div className="w-full lg:w-[65%] space-y-space-lg">
                 
+                {errorMessage && (
+                  <div className="p-4 bg-error-container text-on-error-container rounded-xl flex items-center gap-2 border border-error/20">
+                    <span className="material-symbols-outlined text-[20px]">warning</span>
+                    <span className="text-sm font-semibold">{errorMessage}</span>
+                  </div>
+                )}
+
                 {/* 1. Datos Fiscales */}
                 <section className="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm">
                   <div className="flex items-center justify-between pb-space-md mb-space-md bg-surface-container-low -mx-space-lg -mt-space-lg p-space-lg rounded-t-xl">
@@ -201,35 +346,74 @@ export default function CheckoutPage() {
                   </div>
                   
                   <div className="space-y-space-md">
+                    <div className="space-y-space-xs">
+                      <label className="font-label-md text-label-md text-on-surface flex items-center justify-between">
+                        <span>Nombre Completo o Razón Social</span>
+                        <span className="text-primary font-body-sm text-body-sm">*Obligatorio</span>
+                      </label>
+                      <input 
+                        value={formData.name}
+                        onChange={(e) => handleInputChange('name', e.target.value)}
+                        className="w-full bg-surface-container-low text-on-surface font-body-md text-body-md rounded px-space-md py-space-sm focus:outline-none focus:ring-1 focus:ring-primary" 
+                        type="text" 
+                        placeholder="Ej: Imprenta San Martín SRL / Juan Pérez" 
+                      />
+                    </div>
+
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-space-md">
                       <div className="space-y-space-xs">
                         <label className="font-label-md text-label-md text-on-surface flex items-center justify-between">
-                          <span>Tipo de Documento Fiscal</span>
-                          <span className="text-primary font-body-sm text-body-sm">*Obligatorio</span>
+                          <span>Tipo de Documento</span>
                         </label>
-                        <select className="w-full bg-surface-container-low text-on-surface font-body-md text-body-md rounded px-space-md py-space-sm focus:outline-none pr-space-xl appearance-none">
-                          <option defaultValue="cuit">CUIT / CUIL</option>
-                          <option>DNI</option>
+                        <select 
+                          value={formData.docType}
+                          onChange={(e) => handleInputChange('docType', e.target.value)}
+                          className="w-full bg-surface-container-low text-on-surface font-body-md text-body-md rounded px-space-md py-space-sm focus:outline-none pr-space-xl appearance-none"
+                        >
+                          <option value="CUIT / CUIL">CUIT / CUIL</option>
+                          <option value="DNI">DNI</option>
                         </select>
                       </div>
                       <div className="space-y-space-xs">
                         <label className="font-label-md text-label-md text-on-surface flex items-center justify-between">
                           <span>Número de Documento</span>
                         </label>
-                        <div className="relative">
-                          <input className="w-full bg-surface-container-low text-on-surface font-body-md text-body-md rounded px-space-md py-space-sm focus:outline-none" type="text" placeholder="Tu número sin guiones" />
-                        </div>
+                        <input 
+                          value={formData.docNumber}
+                          onChange={(e) => handleInputChange('docNumber', e.target.value)}
+                          className="w-full bg-surface-container-low text-on-surface font-body-md text-body-md rounded px-space-md py-space-sm focus:outline-none" 
+                          type="text" 
+                          placeholder="Sin guiones ni puntos" 
+                        />
                       </div>
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-space-md">
                       <div className="space-y-space-xs">
-                        <label className="font-label-md text-label-md text-on-surface">Email</label>
-                        <input className="w-full bg-surface-container-low text-on-surface font-body-md text-body-md rounded px-space-md py-space-sm focus:outline-none" type="email" placeholder="tu@email.com" />
+                        <label className="font-label-md text-label-md text-on-surface flex items-center justify-between">
+                          <span>Email</span>
+                          <span className="text-primary font-body-sm text-body-sm">*Obligatorio</span>
+                        </label>
+                        <input 
+                          value={formData.email}
+                          onChange={(e) => handleInputChange('email', e.target.value)}
+                          className="w-full bg-surface-container-low text-on-surface font-body-md text-body-md rounded px-space-md py-space-sm focus:outline-none" 
+                          type="email" 
+                          placeholder="tu@email.com" 
+                        />
                       </div>
                       <div className="space-y-space-xs">
-                        <label className="font-label-md text-label-md text-on-surface">WhatsApp / Teléfono</label>
-                        <input className="w-full bg-surface-container-low text-on-surface font-body-md text-body-md rounded px-space-md py-space-sm focus:outline-none" type="tel" placeholder="Tu celular" />
+                        <label className="font-label-md text-label-md text-on-surface flex items-center justify-between">
+                          <span>WhatsApp / Teléfono</span>
+                          <span className="text-primary font-body-sm text-body-sm">*Obligatorio</span>
+                        </label>
+                        <input 
+                          value={formData.phone}
+                          onChange={(e) => handleInputChange('phone', e.target.value)}
+                          className="w-full bg-surface-container-low text-on-surface font-body-md text-body-md rounded px-space-md py-space-sm focus:outline-none" 
+                          type="tel" 
+                          placeholder="Ej: 11 4455 6677" 
+                        />
                       </div>
                     </div>
                   </div>
@@ -249,12 +433,27 @@ export default function CheckoutPage() {
                   <div className="space-y-space-md">
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-space-md">
                       <div className="sm:col-span-2 space-y-space-xs">
-                        <label className="font-label-md text-label-md text-on-surface">Domicilio de Entrega</label>
-                        <input className="w-full bg-surface-container-low text-on-surface font-body-md text-body-md rounded px-space-md py-space-sm focus:outline-none" type="text" placeholder="Calle, Altura, Piso, Depto" />
+                        <label className="font-label-md text-label-md text-on-surface flex items-center justify-between">
+                          <span>Domicilio de Entrega</span>
+                          <span className="text-primary font-body-sm text-body-sm">*Obligatorio</span>
+                        </label>
+                        <input 
+                          value={formData.address}
+                          onChange={(e) => handleInputChange('address', e.target.value)}
+                          className="w-full bg-surface-container-low text-on-surface font-body-md text-body-md rounded px-space-md py-space-sm focus:outline-none" 
+                          type="text" 
+                          placeholder="Calle, Altura, Piso, Depto" 
+                        />
                       </div>
                       <div className="space-y-space-xs">
                         <label className="font-label-md text-label-md text-on-surface">Código Postal</label>
-                        <input className="w-full bg-surface-container-low text-on-surface font-body-md text-body-md rounded px-space-md py-space-sm focus:outline-none" type="text" placeholder="Ej: C1266" />
+                        <input 
+                          value={formData.postalCode}
+                          onChange={(e) => handleInputChange('postalCode', e.target.value)}
+                          className="w-full bg-surface-container-low text-on-surface font-body-md text-body-md rounded px-space-md py-space-sm focus:outline-none" 
+                          type="text" 
+                          placeholder="Ej: C1266" 
+                        />
                       </div>
                     </div>
                   </div>
@@ -300,13 +499,22 @@ export default function CheckoutPage() {
                 {/* Confirmación */}
                 <section className="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm space-y-space-md">
                   <button 
-                    onClick={() => setIsSubmitted(true)}
-                    className="w-full bg-primary hover:bg-primary-container text-on-primary py-space-md px-space-lg rounded-xl font-label-md text-headline-sm text-center font-bold tracking-wide shadow-md transition-all flex items-center justify-center gap-space-sm" 
+                    onClick={handleConfirmOrder}
+                    disabled={cart.length === 0 || isSubmitting}
+                    className="w-full bg-primary hover:bg-primary-container text-on-primary py-space-md px-space-lg rounded-xl font-label-md text-headline-sm text-center font-bold tracking-wide shadow-md transition-all flex items-center justify-center gap-space-sm disabled:opacity-60 disabled:cursor-not-allowed" 
                     type="button"
-                    disabled={cart.length === 0}
                   >
-                    <span className="material-symbols-outlined text-[22px]">lock</span>
-                    <span>Confirmar y Realizar Pedido ({formatMoney(totalFinal)})</span>
+                    {isSubmitting ? (
+                      <>
+                        <span className="material-symbols-outlined animate-spin text-[22px]">progress_activity</span>
+                        <span>Procesando Pedido...</span>
+                      </>
+                    ) : (
+                      <>
+                        <span className="material-symbols-outlined text-[22px]">lock</span>
+                        <span>Confirmar y Realizar Pedido ({formatMoney(totalFinal)})</span>
+                      </>
+                    )}
                   </button>
                 </section>
 
@@ -362,7 +570,7 @@ export default function CheckoutPage() {
                         <span>Flete Logística Propia</span>
                         <span className="material-symbols-outlined text-[14px] text-secondary">local_shipping</span>
                       </span>
-                      <span className="font-data-tabular text-secondary font-bold">{formatMoney(envio)}</span>
+                      <span className="font-data-tabular text-secondary font-bold">{envioPendiente ? 'A coordinar' : formatMoney(envio)}</span>
                     </div>
                   </div>
 

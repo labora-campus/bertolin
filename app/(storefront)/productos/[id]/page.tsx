@@ -1,12 +1,57 @@
 'use client'
 
-import { useState, use } from 'react'
+import { useState, useEffect, use } from 'react'
 import Link from 'next/link'
 import { useCart } from '@/context/CartContext'
+import { supabase } from '@/lib/supabase'
+
+const DUMMY_PRODUCTS: Record<string, any> = {
+  '1': { title: 'Resma Boreal A4', cat: 'Resmitas', price: 8750, img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAOHyxCaME7bdwoHVpIK1X-a8EOZzYlvExLM7jd6h1iWukqcIgwPKBxWpYwAJzpEDsOBg3bjFKofBJMSZKe4D91Dpucwjwr3R-vwm7X2cpk78Ua2bxldE0Mmjp0g1HO7FZRwwJjA_z5PsaazBhIyAtOYUSL_vZlD8hw2vZxyO3tAR4mj6qc7uQcKO-rtdeCbXYucaATVnq_zG2ZqxUzhKKrLRdabVwjosv6rC5n2Hd6_5acGx9hL_w14g', sku: 'BOR-A4-75' },
+  'p1': { title: 'Resma Boreal Obra 75g A4', cat: 'Obra', price: 8750, img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAOHyxCaME7bdwoHVpIK1X-a8EOZzYlvExLM7jd6h1iWukqcIgwPKBxWpYwAJzpEDsOBg3bjFKofBJMSZKe4D91Dpucwjwr3R-vwm7X2cpk78Ua2bxldE0Mmjp0g1HO7FZRwwJjA_z5PsaazBhIyAtOYUSL_vZlD8hw2vZxyO3tAR4mj6qc7uQcKO-rtdeCbXYucaATVnq_zG2ZqxUzhKKrLRdabVwjosv6rC5n2Hd6_5acGx9hL_w14g', sku: 'BOR-A4-75' },
+  '7': { title: 'Resma Autor A4', cat: 'Resmitas', price: 11519, img: 'https://http2.mlstatic.com/D_NQ_NP_740117-MLA92896707763_092025-O.jpg', sku: 'AUT-A4-80' },
+  'p7': { title: 'Resma Autor A4 Inkjet/Oficina', cat: 'Resmitas', price: 11519, img: 'https://http2.mlstatic.com/D_NQ_NP_740117-MLA92896707763_092025-O.jpg', sku: 'AUT-A4-80' },
+  '8': { title: 'Boreal Oficio Blanco 75g', cat: 'Resmitas', price: 12899, img: 'https://http2.mlstatic.com/D_NQ_NP_933413-MLA99578722762_122025-O.jpg', sku: 'BOR-OF-75' },
+  'p8': { title: 'Boreal Oficio Blanco 75g', cat: 'Resmitas', price: 12899, img: 'https://http2.mlstatic.com/D_NQ_NP_933413-MLA99578722762_122025-O.jpg', sku: 'BOR-OF-75' },
+  'default': { title: 'Cartulina Ilustración Semi-Mate 300g', cat: 'Pliego 70x100 cm', price: 62400, img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCrJPUWG5a4yJk4cN_X-4GGTR2JFNHSC45X4U-_M6fZ_m9Zcod21OV4_VMGsSdr5BynYCb_gBVv7QePLfXlP8zbHKrZTlXbDkWJgk6jRnPWoK8greSlaY-kzVgnZGYaCspYwESmqVvrnniUJ9FLxEZtesagjcX90YEv79qBuMfi2ZFW05x37I51FQ8dkvFfIVEQOiyKnpB4T9pk5KVyNuTit7vg894KlaEW7sWT0Nr9keCdMkVkLQPFlg', sku: 'CAR-ILU-300-70100' }
+}
 
 export default function ProductDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const unwrappedParams = use(params)
   const { addToCart } = useCart()
+  
+  const fallback = DUMMY_PRODUCTS[unwrappedParams.id] || DUMMY_PRODUCTS['default']
+  const [productData, setProductData] = useState(fallback)
+
+  useEffect(() => {
+    async function fetchFromSupabase() {
+      try {
+        const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(unwrappedParams.id)
+        let query = supabase.from('products').select('*, categories(name)')
+        
+        if (isUUID) {
+          query = query.or(`id.eq.${unwrappedParams.id},slug.eq.${unwrappedParams.id}`)
+        } else {
+          query = query.eq('slug', unwrappedParams.id)
+        }
+
+        const { data, error } = await query.single()
+
+        if (!error && data) {
+          setProductData({
+            title: data.name,
+            cat: data.categories?.name || 'General',
+            price: Number(data.price),
+            img: (data.images && data.images[0]) || fallback.img,
+            sku: data.sku || fallback.sku,
+            desc: data.description || fallback.desc,
+          })
+        }
+      } catch (err) {
+        // Keep fallback
+      }
+    }
+    fetchFromSupabase()
+  }, [unwrappedParams.id])
 
   // React State for interactive elements
   const [activeTab, setActiveTab] = useState<'specs' | 'usage' | 'logistics'>('specs')
@@ -23,9 +68,10 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
 
   // Pricing Logic
   const getUnitPrice = (qty: number) => {
-    if (qty >= 20) return 53040
-    if (qty >= 5) return 57408
-    return 62400
+    // Simple mock scaling for pricing
+    if (qty >= 20) return productData.price * 0.85;
+    if (qty >= 5) return productData.price * 0.92;
+    return productData.price;
   }
 
   const unitPrice = getUnitPrice(quantity)
@@ -64,10 +110,10 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
   const handleAddToCart = () => {
     addToCart({
       id: unwrappedParams.id || 'p3',
-      name: 'Cartulina Ilustración Semi-Mate 300g',
-      category: 'Pliego 70x100 cm',
+      name: productData.title,
+      category: productData.cat,
       price: unitPrice,
-      image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCrJPUWG5a4yJk4cN_X-4GGTR2JFNHSC45X4U-_M6fZ_m9Zcod21OV4_VMGsSdr5BynYCb_gBVv7QePLfXlP8zbHKrZTlXbDkWJgk6jRnPWoK8greSlaY-kzVgnZGYaCspYwESmqVvrnniUJ9FLxEZtesagjcX90YEv79qBuMfi2ZFW05x37I51FQ8dkvFfIVEQOiyKnpB4T9pk5KVyNuTit7vg894KlaEW7sWT0Nr9keCdMkVkLQPFlg',
+      image: productData.img,
     })
     // Can optionally add quantity logic if the context supports it, 
     // for now we add it `quantity` times or modify the cart to accept quantity.
@@ -76,10 +122,10 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
     for(let i = 1; i < quantity; i++){
         addToCart({
             id: unwrappedParams.id || 'p3',
-            name: 'Cartulina Ilustración Semi-Mate 300g',
-            category: 'Pliego 70x100 cm',
+            name: productData.title,
+            category: productData.cat,
             price: unitPrice,
-            image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCrJPUWG5a4yJk4cN_X-4GGTR2JFNHSC45X4U-_M6fZ_m9Zcod21OV4_VMGsSdr5BynYCb_gBVv7QePLfXlP8zbHKrZTlXbDkWJgk6jRnPWoK8greSlaY-kzVgnZGYaCspYwESmqVvrnniUJ9FLxEZtesagjcX90YEv79qBuMfi2ZFW05x37I51FQ8dkvFfIVEQOiyKnpB4T9pk5KVyNuTit7vg894KlaEW7sWT0Nr9keCdMkVkLQPFlg',
+            image: productData.img,
         })
     }
   }
@@ -88,10 +134,10 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
     new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS', maximumFractionDigits: 0 }).format(amount)
 
   const thumbs = [
-    { src: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCrJPUWG5a4yJk4cN_X-4GGTR2JFNHSC45X4U-_M6fZ_m9Zcod21OV4_VMGsSdr5BynYCb_gBVv7QePLfXlP8zbHKrZTlXbDkWJgk6jRnPWoK8greSlaY-kzVgnZGYaCspYwESmqVvrnniUJ9FLxEZtesagjcX90YEv79qBuMfi2ZFW05x37I51FQ8dkvFfIVEQOiyKnpB4T9pk5KVyNuTit7vg894KlaEW7sWT0Nr9keCdMkVkLQPFlg', label: '1. Pliegos 70x100' },
-    { src: 'https://lh3.googleusercontent.com/aida-public/AB6AXuB4IfmrkZdUqQlCcC0jDkov3ypdjjTzceYGzVqjH5f8mfP42JBLA7BURuVEORk16ghh1ZvPMMMA6YKzhAiEUaOMYfxvw4yO84jGurEVGmjuDBi3YpUQuzB3Y0KDfbx3JeSoP6pEt5GARcxc3SDpOFxv_f5Wu5SwlXAGJMcuXogNkq8-Bep4HmSVU3wS2-hVckK89rLfSGrcNFYlqMAQENnHELU7LnWNbvdb5p2yEaynLuxBRGPYML36jw', label: '2. Fibra y Grano' },
-    { src: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCsh23PbwrwhfD-1eebQ7JAqNFr3N4ndyAmre-RiKiQej_-Fh_FoyZTucSJE_wf6HDJAkWZNpUXORoNVsi9RF_yQCNNQySPbeyUHa9UpfZ7wxCwcOFIRCkVGFAwUlNObclZjeb_gzUlR6L28WjFNOez5dEkz8--Y5b8E4RcX-_AMhsN7m_QRtbQyT2ombfT0HfurHToimUAl50udM6CFhC8uiAbcftpiH1AgKdsVFHAe_HE_yfHFJiCwA', label: '3. Test Rigidez' },
-    { src: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAJRv35_zqiyVFiSOJs4cBYnWrGsh15U7cfe4ScMLl68dxrGrvrpyNTVVLtRWHWhASQdEd3IE507Z32kp5PSHItN6cuX_LtpeXH6XudannxK7ERKsmJScBl-YtAQODXgGmHDdmOGXaayzPXevjtNtxX-uAm5i9s9yatnu2U52ZGfoTaXG_U38ynsVUq8L6jrKSywa-_7Lw3JITNTTDVIzcmPhHwWsuIZbYt9XRmBSsnWxY1haqZd0-qTQ', label: '4. Empaque Fabril' }
+    { src: productData.img, label: 'Imagen Principal' },
+    { src: 'https://lh3.googleusercontent.com/aida-public/AB6AXuB4IfmrkZdUqQlCcC0jDkov3ypdjjTzceYGzVqjH5f8mfP42JBLA7BURuVEORk16ghh1ZvPMMMA6YKzhAiEUaOMYfxvw4yO84jGurEVGmjuDBi3YpUQuzB3Y0KDfbx3JeSoP6pEt5GARcxc3SDpOFxv_f5Wu5SwlXAGJMcuXogNkq8-Bep4HmSVU3wS2-hVckK89rLfSGrcNFYlqMAQENnHELU7LnWNbvdb5p2yEaynLuxBRGPYML36jw', label: 'Zoom Textura' },
+    { src: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCsh23PbwrwhfD-1eebQ7JAqNFr3N4ndyAmre-RiKiQej_-Fh_FoyZTucSJE_wf6HDJAkWZNpUXORoNVsi9RF_yQCNNQySPbeyUHa9UpfZ7wxCwcOFIRCkVGFAwUlNObclZjeb_gzUlR6L28WjFNOez5dEkz8--Y5b8E4RcX-_AMhsN7m_QRtbQyT2ombfT0HfurHToimUAl50udM6CFhC8uiAbcftpiH1AgKdsVFHAe_HE_yfHFJiCwA', label: 'Detalle' },
+    { src: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAJRv35_zqiyVFiSOJs4cBYnWrGsh15U7cfe4ScMLl68dxrGrvrpyNTVVLtRWHWhASQdEd3IE507Z32kp5PSHItN6cuX_LtpeXH6XudannxK7ERKsmJScBl-YtAQODXgGmHDdmOGXaayzPXevjtNtxX-uAm5i9s9yatnu2U52ZGfoTaXG_U38ynsVUq8L6jrKSywa-_7Lw3JITNTTDVIzcmPhHwWsuIZbYt9XRmBSsnWxY1haqZd0-qTQ', label: 'Empaque' }
   ]
 
   return (
@@ -178,14 +224,14 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
               <div className="flex flex-col gap-space-xs">
                 <div className="flex items-center justify-between flex-wrap gap-space-xs">
                   <span className="bg-secondary-fixed text-on-secondary-fixed-variant px-space-sm py-0.5 rounded font-label-eyebrow text-label-eyebrow uppercase tracking-wider font-bold">
-                    SUZANO / CHAMBRIL · CALIDAD PRIMERA A
+                    {productData.cat}
                   </span>
                   <div className="flex items-center gap-1 text-on-surface-variant font-data-tabular text-body-sm">
-                    <span>SKU: <strong className="text-on-surface">CAR-ILU-300-70100</strong></span>
+                    <span>SKU: <strong className="text-on-surface">{productData.sku}</strong></span>
                   </div>
                 </div>
                 <h1 className="font-headline-lg text-headline-lg text-on-surface leading-tight mt-1">
-                  Cartulina Ilustración Semi-Mate 300 grs — Pliego 70 x 100 cm
+                  {productData.title}
                 </h1>
                 <div className="flex items-center gap-space-md flex-wrap mt-1">
                   <div className="flex items-center gap-1.5 text-secondary">
@@ -233,24 +279,24 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                     <div className="flex justify-between items-center mb-1">
                       <span className="font-label-md text-label-md text-on-surface font-semibold">1 a 4 paquetes</span>
                     </div>
-                    <div className="font-headline-sm text-headline-sm text-on-surface font-normal">$ 62.400</div>
-                    <p className="font-data-tabular text-[11px] text-on-surface-variant mt-0.5">$ 624 / pliego</p>
+                    <div className="font-headline-sm text-headline-sm text-on-surface font-normal">{formatMoney(getUnitPrice(1))}</div>
+                    <p className="font-data-tabular text-[11px] text-on-surface-variant mt-0.5">{formatMoney(getUnitPrice(1)/100)} / pliego</p>
                   </div>
                   <div onClick={() => setQuantity(5)} className={`p-space-sm rounded-lg transition-all cursor-pointer relative ${quantity >= 5 && quantity < 20 ? 'ring-2 ring-primary bg-surface-container-lowest' : 'bg-surface-container-low'}`}>
                     <span className="absolute -top-2 right-2 bg-primary text-on-primary font-label-eyebrow text-[10px] px-1.5 py-0.5 rounded uppercase">-8% Ahorro</span>
                     <div className="flex justify-between items-center mb-1">
                       <span className="font-label-md text-label-md text-on-surface font-semibold">5 a 19 paquetes</span>
                     </div>
-                    <div className="font-headline-sm text-headline-sm text-primary font-medium">$ 57.408</div>
-                    <p className="font-data-tabular text-[11px] text-on-surface-variant mt-0.5">$ 574 / pliego</p>
+                    <div className="font-headline-sm text-headline-sm text-primary font-medium">{formatMoney(getUnitPrice(5))}</div>
+                    <p className="font-data-tabular text-[11px] text-on-surface-variant mt-0.5">{formatMoney(getUnitPrice(5)/100)} / pliego</p>
                   </div>
                   <div onClick={() => setQuantity(20)} className={`p-space-sm rounded-lg transition-all cursor-pointer relative ${quantity >= 20 ? 'ring-2 ring-primary bg-surface-container-lowest' : 'bg-surface-container-low'}`}>
                     <span className="absolute -top-2 right-2 bg-secondary text-on-secondary font-label-eyebrow text-[10px] px-1.5 py-0.5 rounded uppercase">-15% Pallet</span>
                     <div className="flex justify-between items-center mb-1">
                       <span className="font-label-md text-label-md text-on-surface font-semibold">20+ paquetes</span>
                     </div>
-                    <div className="font-headline-sm text-headline-sm text-secondary font-bold">$ 53.040</div>
-                    <p className="font-data-tabular text-[11px] text-on-surface-variant mt-0.5">Ahorro: $ 9.360/paq</p>
+                    <div className="font-headline-sm text-headline-sm text-secondary font-bold">{formatMoney(getUnitPrice(20))}</div>
+                    <p className="font-data-tabular text-[11px] text-on-surface-variant mt-0.5">Ahorro mayorista</p>
                   </div>
                 </div>
               </div>
@@ -305,7 +351,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                         <span className="material-symbols-outlined text-secondary text-[22px]">analytics</span>
                         <div className="flex flex-col">
                           <span className="font-label-md text-label-md text-on-surface font-semibold">Rinde {yieldData.maxCuts} cortes por hoja base ({yieldData.yieldPct}% apv.)</span>
-                          <span className="font-body-sm text-body-sm text-on-surface-variant">Obtendrás <strong>{yieldData.totalHojas.toLocaleString('es-AR')} hojas cortadas</strong> con el pedido actual.</span>
+                          <span className="font-body-sm text-body-sm text-on-surface-variant">Obtendrás <strong>{(yieldData.totalHojas || 0).toLocaleString('es-AR')} hojas cortadas</strong> con el pedido actual.</span>
                         </div>
                       </div>
                       <div className="flex items-center gap-1 font-label-eyebrow text-label-eyebrow uppercase bg-secondary-fixed text-on-secondary-fixed-variant px-space-sm py-1 rounded">

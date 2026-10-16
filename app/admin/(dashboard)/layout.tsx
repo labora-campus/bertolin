@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import AdminGuard, { LogoutButton } from '@/components/admin/AdminGuard'
 
 export default function AdminDashboardLayout({
   children,
@@ -6,6 +7,7 @@ export default function AdminDashboardLayout({
   children: React.ReactNode
 }) {
   return (
+    <AdminGuard>
     <div className="min-h-screen bg-surface-container flex flex-col md:flex-row">
       {/* Sidebar */}
       <aside className="w-full md:w-64 bg-surface-container-lowest border-r border-surface-container flex flex-col shrink-0">
@@ -44,10 +46,7 @@ export default function AdminDashboardLayout({
             <span className="material-symbols-outlined text-[20px]">open_in_new</span>
             <span className="font-label-md">Ver Tienda</span>
           </Link>
-          <button className="w-full flex items-center gap-space-sm px-space-sm py-space-xs rounded-lg text-error hover:bg-error-container hover:text-on-error-container transition-colors mt-1">
-            <span className="material-symbols-outlined text-[20px]">logout</span>
-            <span className="font-label-md">Cerrar Sesión</span>
-          </button>
+          <LogoutButton />
         </div>
       </aside>
 
@@ -56,5 +55,6 @@ export default function AdminDashboardLayout({
         {children}
       </main>
     </div>
+    </AdminGuard>
   )
 }

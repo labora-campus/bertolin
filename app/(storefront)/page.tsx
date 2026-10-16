@@ -1,78 +1,58 @@
+'use client'
+
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { ProductCard } from '@/components/product/ProductCard'
+import { BannerCarousel } from '@/components/home/BannerCarousel'
+import { supabase } from '@/lib/supabase'
 
 export default function Page() {
+  const [selectedCat, setSelectedCat] = useState<string>('Todos')
+  const [products, setProducts] = useState<any[]>([])
+
+  useEffect(() => {
+    async function loadFeatured() {
+      try {
+        const { data, error } = await supabase
+          .from('products')
+          .select('*, categories(name)')
+          .eq('is_active', true)
+          .order('is_featured', { ascending: false })
+          .limit(8)
+
+        if (!error && data && data.length > 0) {
+          setProducts(data.map((p: any) => ({
+            id: p.slug || p.id,
+            cat: p.categories?.name || 'General',
+            title: p.name,
+            desc: p.specs || p.description || '',
+            price: Number(p.price),
+            stock: p.stock > 0 ? `${p.stock} disp.` : 'Consultar',
+            tag: p.tag || '',
+            img: (p.images && p.images[0]) || 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?q=80&w=600&auto=format&fit=crop'
+          })))
+        }
+      } catch (e) {
+        console.error('Error fetching featured products:', e)
+      }
+    }
+    loadFeatured()
+  }, [])
+
+  const filteredProducts = selectedCat === 'Todos' 
+    ? products 
+    : products.filter(p => p.cat.toLowerCase() === selectedCat.toLowerCase())
+
+  const handleCategoryClick = (catTitle: string) => {
+    setSelectedCat(catTitle)
+    // Scroll smoothly to catalog section
+    document.getElementById('catalogo')?.scrollIntoView({ behavior: 'smooth' })
+  }
+
   return (
     <main className="w-full pt-[132px] bg-surface min-h-[calc(100vh-280px)]">
-      {/* HERO SECTION */}
-      <section className="relative w-full bg-surface-container-lowest overflow-hidden border-b border-surface-container select-none">
-        <div className="relative w-full min-h-[540px] md:min-h-[580px] lg:min-h-[540px] flex">
-          <div className="w-full py-space-lg lg:py-[3.75rem] flex items-center">
-            <div className="max-w-[1280px] w-full mx-auto px-margin-sm md:px-gutter">
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-center">
-                
-                <div className="lg:col-span-6 flex flex-col items-start pr-0 lg:pr-space-md order-2 lg:order-1">
-                  <span className="inline-flex items-center gap-space-xs font-label-eyebrow text-label-eyebrow text-primary tracking-widest uppercase mb-space-sm bg-primary-fixed/60 px-space-sm py-0.5 rounded">
-                    <span className="material-symbols-outlined text-[15px]">local_fire_department</span>
-                    OFERTA DESTACADA DEL MES • HASTA 25% OFF
-                  </span>
-                  <h1 className="font-headline-xl text-headline-xl text-on-surface mb-space-md tracking-tight leading-[1.08]">
-                    Escala Mayorista en <br className="hidden sm:inline"/>
-                    <span className="text-primary italic">Resmas y Papel Kraft</span>
-                  </h1>
-                  <p className="font-body-lg text-body-lg text-on-surface-variant mb-space-lg max-w-xl">
-                    Precios especiales por pallet cerrado y bulto para imprentas, editoriales y librerías comerciales. Despacho programado en 24/48 hs en AMBA.
-                  </p>
-                  <div className="flex flex-wrap items-center gap-space-sm mb-space-lg w-full sm:w-auto">
-                    <Link className="flex items-center justify-center gap-space-xs bg-primary text-on-primary hover:bg-primary-container px-space-lg py-space-sm rounded font-label-md text-label-md transition-all shadow-sm" href="#catalogo">
-                      <span>Ver Ofertas Mayoristas</span>
-                      <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
-                    </Link>
-                    <Link className="flex items-center justify-center gap-space-xs border border-outline/30 bg-surface-container-lowest hover:bg-surface-container text-on-surface px-space-md py-space-sm rounded font-label-md text-label-md transition-colors" href="#">
-                      <span className="material-symbols-outlined text-[18px] text-secondary">table_view</span>
-                      <span>Descargar Lista de Precios (.xlsx)</span>
-                    </Link>
-                  </div>
-                  <div className="flex flex-col sm:flex-row flex-wrap gap-y-space-xs gap-x-space-md font-body-sm text-body-sm text-on-surface-variant">
-                    <span className="flex items-center gap-space-xs">
-                      <span className="material-symbols-outlined text-secondary text-[18px]">verified</span>
-                      Cotización inmediata con CUIT
-                    </span>
-                    <span className="flex items-center gap-space-xs">
-                      <span className="material-symbols-outlined text-secondary text-[18px]">inventory_2</span>
-                      Pallets zunchados y protegidos
-                    </span>
-                    <span className="flex items-center gap-space-xs">
-                      <span className="material-symbols-outlined text-secondary text-[18px]">local_shipping</span>
-                      Flete bonificado por volumen
-                    </span>
-                  </div>
-                </div>
-                
-                <div className="lg:col-span-6 relative mt-space-md lg:mt-0 order-1 lg:order-2">
-                  <div className="relative w-full aspect-[4/3] rounded-xl overflow-hidden bg-surface-container-low shadow-sm group">
-                    <img alt="Comercial de papeles para imprentas" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBs7jy4gjWk1I3alH-cllWekfACwT6aE-h2LvQ_15uvX3d5WYGFdi86vsp_Iqkpb0nGT2CP__a_TIti-v51JqyqU20t_2zxUYa-xzbZZvO4BPb-PCo0fqeTvSiKGPq44GYPpCzt2W9DBp7qITVGsZ2ftf0DRVY4jhZylwPJW4FiyAVX8WRUrAILSZf1dkthyP0egLlCWrHlVk15Tb1uBhpwzCiMgfLLoCBkv2XN-PP7"/>
-                    <div className="absolute top-space-md left-space-md bg-primary text-on-primary px-space-md py-space-xs rounded shadow-md flex items-center gap-space-xs">
-                      <span className="material-symbols-outlined text-[18px]">percent</span>
-                      <span className="font-label-md text-label-md font-bold uppercase tracking-wider">-20% en Pallets Cerrados</span>
-                    </div>
-                    <div className="absolute bottom-space-md right-space-md bg-surface-container-lowest/95 backdrop-blur-md p-space-sm rounded-lg shadow-md flex items-center gap-space-sm border border-surface-container">
-                      <div className="w-10 h-10 rounded-full bg-secondary-fixed flex items-center justify-center text-secondary shrink-0">
-                        <span className="material-symbols-outlined text-[20px]">warehouse</span>
-                      </div>
-                      <div className="flex flex-col text-left pr-space-xs">
-                        <span className="font-label-eyebrow text-[10px] text-on-surface-variant uppercase tracking-wider">Entrega Directa</span>
-                        <span className="font-label-md text-label-md text-on-surface font-bold leading-tight">Stock en Planta Avellaneda</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* HERO CAROUSEL SECTION */}
+      <BannerCarousel />
 
       {/* CATEGORY GRID */}
       <section className="w-full py-space-xl bg-surface">
@@ -86,8 +66,8 @@ export default function Page() {
                 Comprar por categoría
               </h2>
             </div>
-            <Link className="font-label-md text-label-md text-primary hover:text-primary-container flex items-center gap-space-xs transition-colors" href="#catalogo">
-              <span>Ver todo</span>
+            <Link className="font-label-md text-label-md text-primary hover:text-primary-container flex items-center gap-space-xs transition-colors" href="/productos">
+              <span>Ver todo el catálogo</span>
               <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
             </Link>
           </div>
@@ -102,16 +82,20 @@ export default function Page() {
               { id: '07', title: 'Papel kraft', desc: 'Embalaje y bobinas puras' },
               { id: '08', title: 'Sobres comerciales', desc: 'Bolsa, carta y fuelles' },
             ].map((cat) => (
-              <Link key={cat.id} className="group bg-surface-container-lowest hover:bg-surface-container-low p-space-md rounded-lg shadow-sm transition-all flex flex-col justify-between h-36" href="#">
-                <div className="flex items-start justify-between">
+              <button 
+                key={cat.id} 
+                onClick={() => handleCategoryClick(cat.title)}
+                className="group bg-surface-container-lowest hover:bg-surface-container-low p-space-md rounded-lg shadow-sm transition-all flex flex-col justify-between h-36 text-left w-full border border-transparent hover:border-primary/20"
+              >
+                <div className="flex items-start justify-between w-full">
                   <span className="font-label-eyebrow text-label-eyebrow text-primary">{cat.id}</span>
-                  <span className="material-symbols-outlined text-[18px] text-outline group-hover:text-primary group-hover:translate-x-1 transition-all">north_east</span>
+                  <span className="material-symbols-outlined text-[18px] text-outline group-hover:text-primary group-hover:translate-x-1 transition-all">south_east</span>
                 </div>
                 <div>
                   <h3 className="font-headline-sm text-headline-sm text-on-surface group-hover:text-primary transition-colors">{cat.title}</h3>
                   <p className="font-body-sm text-body-sm text-on-surface-variant">{cat.desc}</p>
                 </div>
-              </Link>
+              </button>
             ))}
           </div>
         </div>
@@ -125,12 +109,17 @@ export default function Page() {
               <span className="font-label-eyebrow text-label-eyebrow text-primary uppercase tracking-widest block mb-space-xs">
                 Catálogo Online
               </span>
-              <h2 className="font-headline-lg text-headline-lg text-on-surface">
+              <h2 className="font-headline-lg text-headline-lg text-on-surface flex items-center gap-2">
                 Productos destacados
+                {selectedCat !== 'Todos' && (
+                  <span className="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-bold ml-2">
+                    {selectedCat}
+                  </span>
+                )}
               </h2>
             </div>
             <div className="flex items-center gap-space-md self-stretch sm:self-auto justify-between">
-              <span className="font-body-sm text-body-sm text-on-surface-variant">6 productos en vista</span>
+              <span className="font-body-sm text-body-sm text-on-surface-variant">{filteredProducts.length} productos en vista</span>
               <button className="flex items-center gap-space-xs bg-surface-container-lowest px-space-md py-space-xs rounded shadow-sm text-on-surface font-label-md text-label-md hover:bg-surface-container transition-colors" type="button">
                 <span className="material-symbols-outlined text-[18px]">tune</span>
                 <span>Filtros</span>
@@ -141,12 +130,21 @@ export default function Page() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-start">
             <div className="lg:col-span-3 space-y-space-md">
               <div className="bg-surface-container-lowest p-space-md rounded-lg shadow-sm">
-                <h3 className="font-label-eyebrow text-label-eyebrow uppercase text-on-surface-variant mb-space-md tracking-wider">
+                <h3 className="font-label-eyebrow text-label-eyebrow uppercase text-on-surface-variant mb-space-md tracking-wider flex justify-between items-center">
                   Categorías
+                  {selectedCat !== 'Todos' && (
+                    <button onClick={() => setSelectedCat('Todos')} className="text-primary hover:underline lowercase text-[10px]">
+                      Borrar filtro
+                    </button>
+                  )}
                 </h3>
                 <ul className="space-y-space-xs font-body-sm text-body-sm">
                   <li>
-                    <button className="w-full flex items-center justify-between py-space-xs px-space-sm rounded bg-primary-fixed text-primary font-semibold text-left" type="button">
+                    <button 
+                      onClick={() => setSelectedCat('Todos')}
+                      className={`w-full flex items-center justify-between py-space-xs px-space-sm rounded text-left transition-colors ${selectedCat === 'Todos' ? 'bg-primary-fixed text-primary font-semibold' : 'text-on-surface-variant hover:bg-surface-container hover:text-on-surface'}`} 
+                      type="button"
+                    >
                       <span>Todos los productos</span>
                       <span className="font-data-tabular text-data-tabular">24</span>
                     </button>
@@ -162,15 +160,19 @@ export default function Page() {
                     ['Sobres comerciales', '3'],
                   ].map((cat) => (
                     <li key={cat[0]}>
-                      <button className="w-full flex items-center justify-between py-space-xs px-space-sm rounded text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors text-left" type="button">
+                      <button 
+                        onClick={() => setSelectedCat(cat[0])}
+                        className={`w-full flex items-center justify-between py-space-xs px-space-sm rounded text-left transition-colors ${selectedCat === cat[0] ? 'bg-primary-fixed text-primary font-semibold' : 'text-on-surface-variant hover:bg-surface-container hover:text-on-surface'}`} 
+                        type="button"
+                      >
                         <span>{cat[0]}</span>
-                        <span className="font-data-tabular text-data-tabular text-outline">{cat[1]}</span>
+                        <span className={`font-data-tabular text-data-tabular ${selectedCat === cat[0] ? 'text-primary' : 'text-outline'}`}>{cat[1]}</span>
                       </button>
                     </li>
                   ))}
                 </ul>
               </div>
-              <div className="bg-secondary-container text-on-secondary-fixed p-space-md rounded-lg shadow-sm relative overflow-hidden">
+              <div className="bg-secondary-container text-on-secondary-fixed p-space-md rounded-lg shadow-sm relative overflow-hidden hidden lg:block">
                 <div className="w-10 h-10 rounded-full bg-secondary text-on-secondary flex items-center justify-center mb-space-sm">
                   <span className="material-symbols-outlined text-[20px]">content_cut</span>
                 </div>
@@ -188,16 +190,20 @@ export default function Page() {
             </div>
 
             <div className="lg:col-span-9 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-space-md">
-              {[
-                { id: '1', cat: 'Resmitas', title: 'Resma Boreal A4', desc: '75 gr · 210 × 297 mm · 500 hojas', price: 8750, stock: '48 disponibles', tag: 'Oferta', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAOHyxCaME7bdwoHVpIK1X-a8EOZzYlvExLM7jd6h1iWukqcIgwPKBxWpYwAJzpEDsOBg3bjFKofBJMSZKe4D91Dpucwjwr3R-vwm7X2cpk78Ua2bxldE0Mmjp0g1HO7FZRwwJjA_z5PsaazBhIyAtOYUSL_vZlD8hw2vZxyO3tAR4mj6qc7uQcKO-rtdeCbXYucaATVnq_zG2ZqxUzhKKrLRdabVwjosv6rC5n2Hd6_5acGx9hL_w14g' },
-                { id: '2', cat: 'Obra en papel plano', title: 'Obra blanco natural', desc: '80 gr · 65 × 95 cm · 100 hojas', price: 22400, stock: '22 disponibles', tag: '', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuC7JyjIShPlseS2BXJpGLU79vhhTztZptoMQQOGSgrM8dj_1DQSDtg30syY3NiyDkSSg26V4m6vaxZZsMOs6irruRpgBMmk7tF0JJ-FICYOdioAfdPXV9Kz5IFFJQiZ6gEwdPG0rtCTBWQfR1wFDEwUTTc4mAP9iiYQNqMDE2cHumTR4v5CJIsJpiuzcduWsGnG-vzz9FKwSxmtnyYkGpXhxCQKBPJhj_8AiK_VPheTaOo3qf44f8rvEQ' },
-                { id: '3', cat: 'Cartulinas color', title: 'Cartulina color surtida', desc: '180 gr · 50 × 70 cm · Pack x 10', price: 11900, stock: '14 disponibles', tag: 'Más pedido', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAMVTu4NDQxqzxdPlq6F3L7XQgQLuz4wATeLc48Gbl9AUaDWpt_HypAm6bT4SujZ9aCoGZbEwqwUEzA4xVwMs9qSgae1NHEgN2JJookL4GXt_XzY15m-iBcRyk5ByybFpAJd6TxOV3rif1CzJVr1m5kdPSx7ItNoiq0HQA7013yAvk-cFVLFYRhO7jdcSQpAyK-r4YBkXhzD0zMRlUV6__UNIwKCpV_eZHWtqHJryRB_BG0MWP1xpVChw' },
-                { id: '4', cat: 'Cartulinas pesadas', title: 'Cartulina ilustración', desc: '300 gr · 70 × 100 cm · Pack x 25', price: 39800, stock: '8 disponibles', tag: '', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCBcyi5OdnMryVLuqZ_zHZh6xcgVILpiTng93Maozq8Y9HmTWhddtd9ARh_9AGn6rodfOVI-zPSncjiNorjah_lYrJSq2Wm31OuQoSYFZLUpjQqTE1bYvvryV9nTzGqrsj6boQ9w0H8K8xVb7PWCV9_nDNijUsCiEykKrEuFWVZlbjb_pvP8gXcDVrLOtcoV9Lg_HPt0AAktyeRoF5DnYfszO0sNpRudR8-jW-sl1bPu5mT5i0Ls8Bidw' },
-                { id: '5', cat: 'Cartón gris', title: 'Cartón gris encuadernación', desc: '2 mm · 72 × 102 cm · Pack x 10', price: 18200, stock: '5 disponibles', tag: '', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBJmnQ-Xu5uLJM45JvVXtY2x_QyfZmpSI4AAT2jKcVCwg2VAACJjcNRfr0lSLz-JzNi9Zv1yUniCA9pYb6pVnk4PCh4UK3wkaKTpUkNhtm73PPgfk_bo-xs5L1oH60h6_-Ei23L05zlnjRt1ziKJIdq6PWRayQmzXxGy_PrXBFmikq8NtkIw8qOQgGLLpcwG8Zg0O618y7kxKdLqnXjUhgH9Q59RZoAuVsy4QLh5N9DwlCxGSJGa6ujEw' },
-                { id: '6', cat: 'Autoadhesivos', title: 'Autoadhesivo mate', desc: '90 gr · 65 × 95 cm · Pack x 25', price: 28900, stock: '19 disponibles', tag: '', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBcyjucJlYGs2aQq9O1NGj1bSLzpZYbNIj5T9J9bm2pIg3qYPCRnSYvjprd4ad8p2kUyu7xAuHksyKi_HqDk7fnz-RdRtov1ko0SSZwry-MM6gb6dxmxj8JQQmk13KVM4tiB67il7wSHAzQeifHHDT1EkgwweZ8uMrEcBSwh42pL0xZkj5o1R9iGzm1WlCIF8BzBcFcXb-buGEGfu4Vq2HiNFEPuHtDUOt4OUPz50OcAB6MHKO_qjqaCQ' }
-              ].map((prod) => (
-                <ProductCard key={prod.id} {...prod} />
-              ))}
+              {filteredProducts.length > 0 ? (
+                filteredProducts.map((prod) => (
+                  <ProductCard key={prod.id} {...prod} />
+                ))
+              ) : (
+                <div className="col-span-full bg-surface-container-lowest p-8 rounded-lg text-center border border-outline/20">
+                  <span className="material-symbols-outlined text-[48px] text-outline mb-2">inventory_2</span>
+                  <h3 className="font-headline-sm text-on-surface mb-2">No hay productos destacados aquí</h3>
+                  <p className="text-on-surface-variant text-sm">Pronto agregaremos más productos a esta categoría.</p>
+                  <button onClick={() => setSelectedCat('Todos')} className="mt-4 text-primary font-bold hover:underline">
+                    Ver todos los productos
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>

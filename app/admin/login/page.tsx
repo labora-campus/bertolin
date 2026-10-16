@@ -2,17 +2,31 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { supabase } from '@/lib/supabase'
 
 export default function AdminLoginPage() {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
 
-  const handleLogin = (e: React.FormEvent) => {
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
+
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
-    setTimeout(() => {
+    setError('')
+    const { data, error: authError } = await supabase.auth.signInWithPassword({ email, password })
+    if (authError) {
+      setError('Email o contraseña incorrectos.')
+    } else if (data.user?.app_metadata?.role !== 'admin') {
+      await supabase.auth.signOut()
+      setError('Esta cuenta no tiene permisos de administrador.')
+    } else {
       router.push('/admin')
-    }, 800)
+      return
+    }
+    setLoading(false)
   }
 
   return (
@@ -32,7 +46,8 @@ export default function AdminLoginPage() {
             <input 
               type="email" 
               required
-              defaultValue="admin@papelerabertolin.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className="w-full bg-surface border border-outline rounded-lg px-space-sm py-2 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all" 
             />
           </div>
@@ -41,13 +56,16 @@ export default function AdminLoginPage() {
             <input 
               type="password" 
               required
-              defaultValue="123456"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               className="w-full bg-surface border border-outline rounded-lg px-space-sm py-2 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all" 
             />
           </div>
           
-          <button 
-            type="submit" 
+          {error && <p className="text-error font-body-sm text-body-sm">{error}</p>}
+
+          <button
+            type="submit"
             disabled={loading}
             className="w-full bg-primary hover:bg-primary-container text-on-primary py-2.5 rounded-lg font-label-md font-bold transition-colors disabled:opacity-70 flex justify-center items-center gap-2 mt-4"
           >
