@@ -130,30 +130,30 @@ export function BannerCarousel() {
             {/* Decal background effect for extra punch */}
             <div className="absolute -right-20 -bottom-20 w-[400px] h-[400px] bg-white/5 rounded-full blur-3xl pointer-events-none"></div>
 
-            <div className="max-w-[1280px] w-full mx-auto px-6 md:px-12 h-full flex items-center justify-between relative z-10">
+            <div className="max-w-[1280px] w-full mx-auto px-4 md:px-12 h-full flex items-center justify-between gap-3 relative z-10">
               
               {/* Content Left */}
-              <div className="flex-1 flex flex-col items-start pt-6 md:pt-0 max-w-lg">
+              <div className="flex-[1.3] md:flex-1 min-w-0 flex flex-col items-start pb-6 md:pb-0 md:pt-0 max-w-lg">
                 {slide.tag && (
-                  <span className="bg-secondary text-on-secondary font-label-md text-label-lg font-bold px-4 py-1.5 rounded-full uppercase tracking-widest mb-4 shadow-lg animate-fade-in">
+                  <span className="bg-secondary text-on-secondary font-label-md text-label-lg font-bold px-3 md:px-4 py-1 md:py-1.5 rounded-full uppercase tracking-widest mb-2 md:mb-4 shadow-lg animate-fade-in">
                     {slide.tag}
                   </span>
                 )}
                 
-                <h2 className={`font-headline-lg md:font-headline-xl text-4xl md:text-[54px] leading-tight font-extrabold mb-2 tracking-tight ${slide.textClass}`}>
+                <h2 className={`font-headline-lg md:font-headline-xl text-2xl sm:text-3xl md:text-[54px] leading-tight font-extrabold mb-1 md:mb-2 tracking-tight ${slide.textClass}`}>
                   {slide.title}
                 </h2>
                 
-                <p className={`font-body-md md:text-lg mb-6 opacity-90 ${slide.textClass}`}>
+                <p className={`font-body-md text-sm md:text-lg mb-3 md:mb-6 opacity-90 line-clamp-3 ${slide.textClass}`}>
                   {slide.subtitle}
                 </p>
 
                 {slide.price && slide.oldPrice && (
-                  <div className={`flex items-end gap-3 mb-6 ${slide.textClass}`}>
-                    <span className="text-[32px] md:text-[42px] font-bold leading-none tracking-tighter">
+                  <div className={`flex items-end gap-2 md:gap-3 mb-3 md:mb-6 ${slide.textClass}`}>
+                    <span className="text-2xl md:text-[42px] font-bold leading-none tracking-tighter">
                       {formatMoney(slide.price)}
                     </span>
-                    <span className="text-lg md:text-xl line-through opacity-70 mb-1">
+                    <span className="text-sm md:text-xl line-through opacity-70 mb-0.5">
                       {formatMoney(slide.oldPrice)}
                     </span>
                   </div>
@@ -161,7 +161,7 @@ export function BannerCarousel() {
 
                 <Link 
                   href={slide.link}
-                  className={`bg-surface-container-lowest text-on-surface hover:scale-105 hover:shadow-xl px-8 py-3 rounded-full font-label-md text-label-lg font-bold transition-all shadow-md`}
+                  className={`bg-surface-container-lowest text-on-surface hover:scale-105 hover:shadow-xl px-5 py-2 md:px-8 md:py-3 rounded-full font-label-md text-label-lg font-bold transition-all shadow-md`}
                   tabIndex={currentIndex === index ? 0 : -1}
                 >
                   {slide.btnText}
@@ -169,15 +169,15 @@ export function BannerCarousel() {
               </div>
 
               {/* Image Right */}
-              <div className="hidden md:flex flex-1 relative h-full justify-end items-center mr-8">
+              <div className="flex flex-[0.9] md:flex-1 relative h-full justify-end items-center md:mr-8 pb-6 md:pb-0">
                 {slide.price ? (
                   <img 
                     src={slide.image} 
                     alt={slide.title} 
-                    className="object-contain h-[85%] w-auto max-w-[100%] rounded-2xl mix-blend-multiply drop-shadow-2xl hover:scale-105 transition-transform duration-500"
+                    className="object-contain h-[70%] md:h-[85%] w-auto max-w-[100%] rounded-xl md:rounded-2xl mix-blend-multiply drop-shadow-2xl hover:scale-105 transition-transform duration-500"
                   />
                 ) : (
-                  <div className="w-[100%] h-[85%] right-0 absolute rounded-2xl overflow-hidden shadow-2xl bg-black/10">
+                  <div className="w-[100%] h-[70%] md:h-[85%] right-0 absolute rounded-xl md:rounded-2xl overflow-hidden shadow-2xl bg-black/10">
                     <img
                       src={slide.image}
                       alt=""
