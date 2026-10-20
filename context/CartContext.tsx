@@ -21,6 +21,8 @@ interface CartContextType {
   setIsCartOpen: (isOpen: boolean) => void
   cartTotal: number
   totalItems: number
+  /** Last product added (drives the "Agregado al carrito" toast); key changes on every add */
+  lastAdded: { name: string; key: number } | null
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined)
@@ -28,6 +30,28 @@ const CartContext = createContext<CartContextType | undefined>(undefined)
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const [cart, setCart] = useState<Product[]>([])
   const [isCartOpen, setIsCartOpen] = useState(false)
+  const [lastAdded, setLastAdded] = useState<{ name: string; key: number } | null>(null)
+  const [hydrated, setHydrated] = useState(false)
+
+  // Persist the cart so a reload (very common on mobile) does not empty it
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem('bertolin-cart')
+      if (saved) setCart(JSON.parse(saved))
+    } catch {
+      // storage unavailable or corrupt: start empty
+    }
+    setHydrated(true)
+  }, [])
+
+  useEffect(() => {
+    if (!hydrated) return
+    try {
+      localStorage.setItem('bertolin-cart', JSON.stringify(cart))
+    } catch {
+      // storage full or blocked: cart still works in memory
+    }
+  }, [cart, hydrated])
 
   // Calculate total
   const cartTotal = cart.reduce((total, item) => total + item.price * item.quantity, 0)
@@ -43,7 +67,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       }
       return [...prev, { ...product, quantity: 1 }]
     })
-    setIsCartOpen(true)
+    // Don't open the drawer on every add (disruptive on mobile); show a toast instead
+    setLastAdded({ name: product.name, key: Date.now() })
   }
 
   const removeFromCart = (id: string) => {
@@ -76,6 +101,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         setIsCartOpen,
         cartTotal,
         totalItems,
+        lastAdded,
       }}
     >
       {children}

@@ -6,6 +6,9 @@ import { ProductCard } from '@/components/product/ProductCard'
 import { BannerCarousel } from '@/components/home/BannerCarousel'
 import { supabase } from '@/lib/supabase'
 
+// WhatsApp number with country code, digits only (e.g. 5491144556677). Button is hidden if unset.
+const WHATSAPP_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER?.replace(/\D/g, '')
+
 export default function Page() {
   const [selectedCat, setSelectedCat] = useState<string>('Todos')
   const [products, setProducts] = useState<any[]>([])
@@ -39,8 +42,8 @@ export default function Page() {
     loadFeatured()
   }, [])
 
-  const filteredProducts = selectedCat === 'Todos' 
-    ? products 
+  const filteredProducts = selectedCat === 'Todos'
+    ? products
     : products.filter(p => p.cat.toLowerCase() === selectedCat.toLowerCase())
 
   const handleCategoryClick = (catTitle: string) => {
@@ -50,14 +53,14 @@ export default function Page() {
   }
 
   return (
-    <main className="w-full pt-[132px] bg-surface min-h-[calc(100vh-280px)]">
+    <main className="w-full pt-[72px] lg:pt-[132px] bg-surface min-h-[calc(100vh-280px)]">
       {/* HERO CAROUSEL SECTION */}
       <BannerCarousel />
 
       {/* CATEGORY GRID */}
-      <section className="w-full py-space-xl bg-surface">
+      <section className="w-full py-space-lg md:py-space-xl bg-surface">
         <div className="max-w-[1280px] mx-auto px-margin-sm md:px-gutter">
-          <div className="flex items-baseline justify-between mb-space-lg">
+          <div className="flex items-baseline justify-between gap-space-sm mb-space-md md:mb-space-lg">
             <div>
               <span className="font-label-eyebrow text-label-eyebrow text-on-surface-variant uppercase tracking-widest block mb-space-xs">
                 Encontrá lo que buscás
@@ -67,11 +70,12 @@ export default function Page() {
               </h2>
             </div>
             <Link className="font-label-md text-label-md text-primary hover:text-primary-container flex items-center gap-space-xs transition-colors" href="/productos">
-              <span>Ver todo el catálogo</span>
+              <span className="hidden sm:inline">Ver todo el catálogo</span>
+              <span className="sm:hidden">Ver todo</span>
               <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
             </Link>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-space-sm md:gap-space-md">
             {[
               { id: '01', title: 'Resmitas', desc: 'Oficio, A4 y presentación' },
               { id: '02', title: 'Obra en papel plano', desc: 'Formatos 65×95, 82×118' },
@@ -82,18 +86,18 @@ export default function Page() {
               { id: '07', title: 'Papel kraft', desc: 'Embalaje y bobinas puras' },
               { id: '08', title: 'Sobres comerciales', desc: 'Bolsa, carta y fuelles' },
             ].map((cat) => (
-              <button 
-                key={cat.id} 
+              <button
+                key={cat.id}
                 onClick={() => handleCategoryClick(cat.title)}
-                className="group bg-surface-container-lowest hover:bg-surface-container-low p-space-md rounded-lg shadow-sm transition-all flex flex-col justify-between h-36 text-left w-full border border-transparent hover:border-primary/20"
+                className="group bg-surface-container-lowest hover:bg-surface-container-low p-space-sm md:p-space-md rounded-lg shadow-sm transition-all flex flex-col justify-between h-24 md:h-36 text-left w-full border border-transparent hover:border-primary/20"
               >
                 <div className="flex items-start justify-between w-full">
                   <span className="font-label-eyebrow text-label-eyebrow text-primary">{cat.id}</span>
                   <span className="material-symbols-outlined text-[18px] text-outline group-hover:text-primary group-hover:translate-x-1 transition-all">south_east</span>
                 </div>
                 <div>
-                  <h3 className="font-headline-sm text-headline-sm text-on-surface group-hover:text-primary transition-colors">{cat.title}</h3>
-                  <p className="font-body-sm text-body-sm text-on-surface-variant">{cat.desc}</p>
+                  <h3 className="font-headline-sm text-[15px] leading-5 md:text-headline-sm text-on-surface group-hover:text-primary transition-colors">{cat.title}</h3>
+                  <p className="hidden md:block font-body-sm text-body-sm text-on-surface-variant">{cat.desc}</p>
                 </div>
               </button>
             ))}
@@ -102,7 +106,7 @@ export default function Page() {
       </section>
 
       {/* FEATURED PRODUCTS SECTION */}
-      <section className="w-full py-space-xl bg-surface-container-low" id="catalogo">
+      <section className="w-full py-space-lg md:py-space-xl bg-surface-container-low scroll-mt-[72px] lg:scroll-mt-[132px]" id="catalogo">
         <div className="max-w-[1280px] mx-auto px-margin-sm md:px-gutter">
           <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-space-sm mb-space-lg">
             <div>
@@ -112,23 +116,20 @@ export default function Page() {
               <h2 className="font-headline-lg text-headline-lg text-on-surface flex items-center gap-2">
                 Productos destacados
                 {selectedCat !== 'Todos' && (
-                  <span className="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-bold ml-2">
+                  <button type="button" onClick={() => setSelectedCat('Todos')} className="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-bold ml-2 inline-flex items-center gap-1" aria-label="Quitar filtro">
                     {selectedCat}
-                  </span>
+                    <span className="material-symbols-outlined text-[16px]">close</span>
+                  </button>
                 )}
               </h2>
             </div>
             <div className="flex items-center gap-space-md self-stretch sm:self-auto justify-between">
               <span className="font-body-sm text-body-sm text-on-surface-variant">{filteredProducts.length} productos en vista</span>
-              <button className="flex items-center gap-space-xs bg-surface-container-lowest px-space-md py-space-xs rounded shadow-sm text-on-surface font-label-md text-label-md hover:bg-surface-container transition-colors" type="button">
-                <span className="material-symbols-outlined text-[18px]">tune</span>
-                <span>Filtros</span>
-              </button>
             </div>
           </div>
-          
+
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-start">
-            <div className="lg:col-span-3 space-y-space-md">
+            <div className="hidden lg:block lg:col-span-3 space-y-space-md">
               <div className="bg-surface-container-lowest p-space-md rounded-lg shadow-sm">
                 <h3 className="font-label-eyebrow text-label-eyebrow uppercase text-on-surface-variant mb-space-md tracking-wider flex justify-between items-center">
                   Categorías
@@ -140,33 +141,31 @@ export default function Page() {
                 </h3>
                 <ul className="space-y-space-xs font-body-sm text-body-sm">
                   <li>
-                    <button 
+                    <button
                       onClick={() => setSelectedCat('Todos')}
-                      className={`w-full flex items-center justify-between py-space-xs px-space-sm rounded text-left transition-colors ${selectedCat === 'Todos' ? 'bg-primary-fixed text-primary font-semibold' : 'text-on-surface-variant hover:bg-surface-container hover:text-on-surface'}`} 
+                      className={`w-full flex items-center justify-between py-space-xs px-space-sm rounded text-left transition-colors ${selectedCat === 'Todos' ? 'bg-primary-fixed text-primary font-semibold' : 'text-on-surface-variant hover:bg-surface-container hover:text-on-surface'}`}
                       type="button"
                     >
                       <span>Todos los productos</span>
-                      <span className="font-data-tabular text-data-tabular">24</span>
                     </button>
                   </li>
                   {[
-                    ['Resmitas', '3'],
-                    ['Obra en papel plano', '3'],
-                    ['Cartulinas color', '3'],
-                    ['Cartulinas pesadas', '3'],
-                    ['Cartón gris', '3'],
-                    ['Autoadhesivos', '3'],
-                    ['Papel kraft', '3'],
-                    ['Sobres comerciales', '3'],
+                    ['Resmitas'],
+                    ['Obra en papel plano'],
+                    ['Cartulinas color'],
+                    ['Cartulinas pesadas'],
+                    ['Cartón gris'],
+                    ['Autoadhesivos'],
+                    ['Papel kraft'],
+                    ['Sobres comerciales'],
                   ].map((cat) => (
                     <li key={cat[0]}>
-                      <button 
+                      <button
                         onClick={() => setSelectedCat(cat[0])}
-                        className={`w-full flex items-center justify-between py-space-xs px-space-sm rounded text-left transition-colors ${selectedCat === cat[0] ? 'bg-primary-fixed text-primary font-semibold' : 'text-on-surface-variant hover:bg-surface-container hover:text-on-surface'}`} 
+                        className={`w-full flex items-center justify-between py-space-xs px-space-sm rounded text-left transition-colors ${selectedCat === cat[0] ? 'bg-primary-fixed text-primary font-semibold' : 'text-on-surface-variant hover:bg-surface-container hover:text-on-surface'}`}
                         type="button"
                       >
                         <span>{cat[0]}</span>
-                        <span className={`font-data-tabular text-data-tabular ${selectedCat === cat[0] ? 'text-primary' : 'text-outline'}`}>{cat[1]}</span>
                       </button>
                     </li>
                   ))}
@@ -189,7 +188,7 @@ export default function Page() {
               </div>
             </div>
 
-            <div className="lg:col-span-9 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-space-md">
+            <div className="lg:col-span-9 grid grid-cols-2 xl:grid-cols-3 gap-space-sm sm:gap-space-md">
               {filteredProducts.length > 0 ? (
                 filteredProducts.map((prod) => (
                   <ProductCard key={prod.id} {...prod} />
@@ -210,7 +209,7 @@ export default function Page() {
       </section>
 
       {/* SERVICE PILLARS */}
-      <section className="w-full py-space-xl bg-surface" id="servicios">
+      <section className="w-full py-space-lg md:py-space-xl bg-surface" id="servicios">
         <div className="max-w-[1280px] mx-auto px-margin-sm md:px-gutter">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-center">
             <div className="lg:col-span-5">
@@ -264,9 +263,9 @@ export default function Page() {
       </section>
 
       {/* INSTITUTIONAL HERO BANNER */}
-      <section className="w-full py-space-xl bg-surface">
+      <section className="w-full py-space-lg md:py-space-xl bg-surface">
         <div className="max-w-[1280px] mx-auto px-margin-sm md:px-gutter">
-          <div className="bg-on-secondary-fixed-variant text-on-secondary rounded-xl p-space-lg lg:p-space-xl shadow-md relative overflow-hidden">
+          <div className="bg-on-secondary-fixed-variant text-on-secondary rounded-xl p-space-md sm:p-space-lg lg:p-space-xl shadow-md relative overflow-hidden">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-center relative z-10">
               <div className="lg:col-span-7">
                 <span className="font-label-eyebrow text-label-eyebrow text-secondary-fixed uppercase tracking-widest block mb-space-xs">
@@ -290,10 +289,18 @@ export default function Page() {
         </div>
       </section>
 
-      <Link aria-label="Contactar por WhatsApp" className="fixed bottom-space-lg right-space-lg z-50 flex items-center gap-space-sm bg-secondary text-on-secondary px-space-md py-space-sm rounded-full shadow-[0_12px_24px_-6px_rgba(74,74,74,0.08)] hover:bg-on-secondary-fixed-variant transition-all" href="#">
-        <span className="material-symbols-outlined text-[20px]">chat</span>
-        <span className="font-label-md text-label-md hidden sm:inline">Asesor en línea</span>
-      </Link>
+      {WHATSAPP_NUMBER && (
+        <a
+          aria-label="Contactar por WhatsApp"
+          href={`https://wa.me/${WHATSAPP_NUMBER}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="fixed bottom-[calc(4.5rem+env(safe-area-inset-bottom))] right-4 sm:bottom-space-lg sm:right-space-lg z-40 flex items-center justify-center gap-space-sm bg-secondary text-on-secondary w-14 h-14 sm:w-auto sm:h-auto sm:px-space-md sm:py-space-sm rounded-full shadow-[0_12px_24px_-6px_rgba(74,74,74,0.25)] hover:bg-on-secondary-fixed-variant transition-all"
+        >
+          <span className="material-symbols-outlined text-[24px] sm:text-[20px]">chat</span>
+          <span className="font-label-md text-label-md hidden sm:inline">Asesor en línea</span>
+        </a>
+      )}
     </main>
   )
 }

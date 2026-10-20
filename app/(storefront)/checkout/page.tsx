@@ -15,6 +15,12 @@ export default function CheckoutPage() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isUploading, setIsUploading] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
+  const [showItems, setShowItems] = useState(false)
+
+  // The confirm button is sticky at the bottom on mobile: bring validation errors into view
+  useEffect(() => {
+    if (errorMessage) document.getElementById('checkout-error')?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+  }, [errorMessage])
 
   // Form State
   const [formData, setFormData] = useState({
@@ -145,7 +151,7 @@ export default function CheckoutPage() {
 
   if (isSubmitted) {
     return (
-      <main className="w-full pt-[132px] bg-surface min-h-[calc(100vh-280px)] p-space-lg relative">
+      <main className="w-full pt-[72px] lg:pt-[132px] bg-surface min-h-[calc(100vh-280px)] p-space-lg relative">
         <div className="max-w-2xl mx-auto bg-surface-container-lowest rounded-xl p-space-xl shadow-lg border border-surface-container">
           <div className="text-center mb-space-lg">
             <div className="w-16 h-16 rounded-full bg-primary/10 text-primary flex items-center justify-center mx-auto mb-space-md">
@@ -194,11 +200,11 @@ export default function CheckoutPage() {
               <p className="font-body-sm text-body-sm text-on-surface-variant mb-space-md">
                 Adjuntá el comprobante (PDF o imagen) para agilizar la validación del pedido.
               </p>
-              <input 
-                type="file" 
+              <input
+                type="file"
                 accept="image/*,application/pdf"
                 onChange={(e) => setFile(e.target.files && e.target.files[0] ? e.target.files[0] : null)}
-                className="block w-full max-w-xs mx-auto text-body-sm text-on-surface-variant file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-label-md file:font-bold file:bg-primary file:text-on-primary hover:file:bg-primary-container hover:file:text-on-primary-container transition-colors cursor-pointer" 
+                className="block w-full max-w-xs mx-auto text-body-sm text-on-surface-variant file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-label-md file:font-bold file:bg-primary file:text-on-primary hover:file:bg-primary-container hover:file:text-on-primary-container transition-colors cursor-pointer"
               />
               {file && (
                 <p className="text-xs text-primary font-semibold mt-2">
@@ -206,8 +212,8 @@ export default function CheckoutPage() {
                 </p>
               )}
             </div>
-            
-            <button 
+
+            <button
               onClick={handleUploadReceipt}
               disabled={!file || isUploading}
               className={`w-full py-space-md rounded-xl font-headline-sm text-headline-sm font-bold tracking-wide transition-all shadow-sm flex items-center justify-center gap-space-sm ${file && !isUploading ? 'bg-primary hover:bg-primary-container text-on-primary scale-100 hover:scale-[1.02]' : 'bg-surface-container-high text-on-surface-variant cursor-not-allowed opacity-70'}`}
@@ -239,7 +245,7 @@ export default function CheckoutPage() {
                 Recibimos tu comprobante. En breve validaremos el pago y procesaremos tu orden para el despacho.
               </p>
               <div className="space-y-space-sm">
-                <a 
+                <a
                   href={`https://wa.me/5491142011180?text=Hola,%20acabo%20de%20hacer%20el%20pedido%20${encodeURIComponent(createdOrderId)}%20y%20ya%20envi%C3%A9%20el%20comprobante.`}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -248,8 +254,8 @@ export default function CheckoutPage() {
                   <span className="material-symbols-outlined">chat</span>
                   Hacer seguimiento de mi pedido
                 </a>
-                <Link 
-                  href="/" 
+                <Link
+                  href="/"
                   className="w-full flex items-center justify-center bg-surface-container hover:bg-surface-container-high text-on-surface py-space-sm px-space-md rounded-lg font-label-md transition-colors"
                 >
                   Volver a la tienda
@@ -263,7 +269,7 @@ export default function CheckoutPage() {
   }
 
   return (
-    <main className="w-full pt-[132px] bg-surface min-h-[calc(100vh-280px)]">
+    <main className="w-full pt-[72px] lg:pt-[132px] bg-surface min-h-[calc(100vh-280px)]">
       <div className="flex flex-col w-full">
         {/* Order Header */}
         <div className="w-full bg-surface-container-low py-space-md">
@@ -282,10 +288,21 @@ export default function CheckoutPage() {
         </div>
 
         {/* Progress Stepper */}
-        <div className="w-full bg-surface py-space-lg">
+        <div className="w-full bg-surface py-space-sm md:py-space-lg">
           <div className="max-w-[1280px] mx-auto px-margin-sm md:px-gutter">
-            <div className="bg-surface-container-lowest rounded-xl p-space-md md:p-space-lg shadow-sm">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-space-md">
+            {/* Mobile stepper */}
+            <div className="md:hidden flex items-center gap-space-sm">
+              <div className="flex-1">
+                <div className="flex justify-between font-label-md text-label-md">
+                  <span className="text-primary font-bold">Paso 2 de 3 · Datos y entrega</span>
+                </div>
+                <div className="h-1.5 mt-1 rounded-full bg-surface-container overflow-hidden">
+                  <div className="h-full w-2/3 bg-primary rounded-full" />
+                </div>
+              </div>
+            </div>
+            <div className="hidden md:block bg-surface-container-lowest rounded-xl p-space-md md:p-space-lg shadow-sm">
+              <div className="grid grid-cols-3 gap-space-md">
                 <div className="flex items-center gap-space-md p-space-sm rounded-lg bg-surface-container-low">
                   <div className="w-9 h-9 rounded-full bg-secondary text-on-secondary flex items-center justify-center shrink-0 shadow-sm">
                     <span className="material-symbols-outlined text-[20px]">check</span>
@@ -323,20 +340,20 @@ export default function CheckoutPage() {
         <div className="w-full pb-space-xl">
           <div className="max-w-[1280px] mx-auto px-margin-sm md:px-gutter">
             <div className="flex flex-col lg:flex-row gap-gutter items-start">
-              
+
               {/* LEFT COLUMN: Forms */}
               <div className="w-full lg:w-[65%] space-y-space-lg">
-                
+
                 {errorMessage && (
-                  <div className="p-4 bg-error-container text-on-error-container rounded-xl flex items-center gap-2 border border-error/20">
+                  <div id="checkout-error" role="alert" className="p-4 bg-error-container text-on-error-container rounded-xl flex items-center gap-2 border border-error/20">
                     <span className="material-symbols-outlined text-[20px]">warning</span>
                     <span className="text-sm font-semibold">{errorMessage}</span>
                   </div>
                 )}
 
                 {/* 1. Datos Fiscales */}
-                <section className="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm">
-                  <div className="flex items-center justify-between pb-space-md mb-space-md bg-surface-container-low -mx-space-lg -mt-space-lg p-space-lg rounded-t-xl">
+                <section className="bg-surface-container-lowest rounded-xl p-space-md sm:p-space-lg shadow-sm">
+                  <div className="flex items-center justify-between pb-space-md mb-space-md bg-surface-container-low -mx-space-md -mt-space-md sm:-mx-space-lg sm:-mt-space-lg p-space-md sm:p-space-lg rounded-t-xl">
                     <div className="flex items-center gap-space-sm">
                       <span className="w-7 h-7 rounded-full bg-primary text-on-primary flex items-center justify-center font-label-md text-label-md font-bold">1</span>
                       <div>
@@ -344,19 +361,20 @@ export default function CheckoutPage() {
                       </div>
                     </div>
                   </div>
-                  
+
                   <div className="space-y-space-md">
                     <div className="space-y-space-xs">
                       <label className="font-label-md text-label-md text-on-surface flex items-center justify-between">
                         <span>Nombre Completo o Razón Social</span>
                         <span className="text-primary font-body-sm text-body-sm">*Obligatorio</span>
                       </label>
-                      <input 
+                      <input
                         value={formData.name}
                         onChange={(e) => handleInputChange('name', e.target.value)}
-                        className="w-full bg-surface-container-low text-on-surface font-body-md text-body-md rounded px-space-md py-space-sm focus:outline-none focus:ring-1 focus:ring-primary" 
-                        type="text" 
-                        placeholder="Ej: Imprenta San Martín SRL / Juan Pérez" 
+                        autoComplete="name"
+                        className="w-full bg-surface-container-low text-on-surface font-body-md text-body-md rounded px-space-md py-space-sm min-h-11 focus:outline-none focus:ring-1 focus:ring-primary"
+                        type="text"
+                        placeholder="Ej: Imprenta San Martín SRL / Juan Pérez"
                       />
                     </div>
 
@@ -365,10 +383,10 @@ export default function CheckoutPage() {
                         <label className="font-label-md text-label-md text-on-surface flex items-center justify-between">
                           <span>Tipo de Documento</span>
                         </label>
-                        <select 
+                        <select
                           value={formData.docType}
                           onChange={(e) => handleInputChange('docType', e.target.value)}
-                          className="w-full bg-surface-container-low text-on-surface font-body-md text-body-md rounded px-space-md py-space-sm focus:outline-none pr-space-xl appearance-none"
+                          className="w-full bg-surface-container-low text-on-surface font-body-md text-body-md rounded px-space-md py-space-sm min-h-11 focus:outline-none pr-space-xl appearance-none"
                         >
                           <option value="CUIT / CUIL">CUIT / CUIL</option>
                           <option value="DNI">DNI</option>
@@ -378,12 +396,13 @@ export default function CheckoutPage() {
                         <label className="font-label-md text-label-md text-on-surface flex items-center justify-between">
                           <span>Número de Documento</span>
                         </label>
-                        <input 
+                        <input
                           value={formData.docNumber}
                           onChange={(e) => handleInputChange('docNumber', e.target.value)}
-                          className="w-full bg-surface-container-low text-on-surface font-body-md text-body-md rounded px-space-md py-space-sm focus:outline-none" 
-                          type="text" 
-                          placeholder="Sin guiones ni puntos" 
+                          inputMode="numeric"
+                          className="w-full bg-surface-container-low text-on-surface font-body-md text-body-md rounded px-space-md py-space-sm min-h-11 focus:outline-none"
+                          type="text"
+                          placeholder="Sin guiones ni puntos"
                         />
                       </div>
                     </div>
@@ -394,12 +413,14 @@ export default function CheckoutPage() {
                           <span>Email</span>
                           <span className="text-primary font-body-sm text-body-sm">*Obligatorio</span>
                         </label>
-                        <input 
+                        <input
                           value={formData.email}
                           onChange={(e) => handleInputChange('email', e.target.value)}
-                          className="w-full bg-surface-container-low text-on-surface font-body-md text-body-md rounded px-space-md py-space-sm focus:outline-none" 
-                          type="email" 
-                          placeholder="tu@email.com" 
+                          autoComplete="email"
+                          inputMode="email"
+                          className="w-full bg-surface-container-low text-on-surface font-body-md text-body-md rounded px-space-md py-space-sm min-h-11 focus:outline-none"
+                          type="email"
+                          placeholder="tu@email.com"
                         />
                       </div>
                       <div className="space-y-space-xs">
@@ -407,12 +428,14 @@ export default function CheckoutPage() {
                           <span>WhatsApp / Teléfono</span>
                           <span className="text-primary font-body-sm text-body-sm">*Obligatorio</span>
                         </label>
-                        <input 
+                        <input
                           value={formData.phone}
                           onChange={(e) => handleInputChange('phone', e.target.value)}
-                          className="w-full bg-surface-container-low text-on-surface font-body-md text-body-md rounded px-space-md py-space-sm focus:outline-none" 
-                          type="tel" 
-                          placeholder="Ej: 11 4455 6677" 
+                          autoComplete="tel"
+                          inputMode="tel"
+                          className="w-full bg-surface-container-low text-on-surface font-body-md text-body-md rounded px-space-md py-space-sm min-h-11 focus:outline-none"
+                          type="tel"
+                          placeholder="Ej: 11 4455 6677"
                         />
                       </div>
                     </div>
@@ -420,8 +443,8 @@ export default function CheckoutPage() {
                 </section>
 
                 {/* 2. Dirección de Entrega */}
-                <section className="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm">
-                  <div className="flex items-center justify-between pb-space-md mb-space-md bg-surface-container-low -mx-space-lg -mt-space-lg p-space-lg rounded-t-xl">
+                <section className="bg-surface-container-lowest rounded-xl p-space-md sm:p-space-lg shadow-sm">
+                  <div className="flex items-center justify-between pb-space-md mb-space-md bg-surface-container-low -mx-space-md -mt-space-md sm:-mx-space-lg sm:-mt-space-lg p-space-md sm:p-space-lg rounded-t-xl">
                     <div className="flex items-center gap-space-sm">
                       <span className="w-7 h-7 rounded-full bg-primary text-on-primary flex items-center justify-center font-label-md text-label-md font-bold">2</span>
                       <div>
@@ -437,22 +460,24 @@ export default function CheckoutPage() {
                           <span>Domicilio de Entrega</span>
                           <span className="text-primary font-body-sm text-body-sm">*Obligatorio</span>
                         </label>
-                        <input 
+                        <input
                           value={formData.address}
                           onChange={(e) => handleInputChange('address', e.target.value)}
-                          className="w-full bg-surface-container-low text-on-surface font-body-md text-body-md rounded px-space-md py-space-sm focus:outline-none" 
-                          type="text" 
-                          placeholder="Calle, Altura, Piso, Depto" 
+                          autoComplete="street-address"
+                          className="w-full bg-surface-container-low text-on-surface font-body-md text-body-md rounded px-space-md py-space-sm min-h-11 focus:outline-none"
+                          type="text"
+                          placeholder="Calle, Altura, Piso, Depto"
                         />
                       </div>
                       <div className="space-y-space-xs">
                         <label className="font-label-md text-label-md text-on-surface">Código Postal</label>
-                        <input 
+                        <input
                           value={formData.postalCode}
                           onChange={(e) => handleInputChange('postalCode', e.target.value)}
-                          className="w-full bg-surface-container-low text-on-surface font-body-md text-body-md rounded px-space-md py-space-sm focus:outline-none" 
-                          type="text" 
-                          placeholder="Ej: C1266" 
+                          autoComplete="postal-code"
+                          className="w-full bg-surface-container-low text-on-surface font-body-md text-body-md rounded px-space-md py-space-sm min-h-11 focus:outline-none"
+                          type="text"
+                          placeholder="Ej: C1266"
                         />
                       </div>
                     </div>
@@ -460,8 +485,8 @@ export default function CheckoutPage() {
                 </section>
 
                 {/* 3. Método de Pago */}
-                <section className="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm">
-                  <div className="flex items-center justify-between pb-space-md mb-space-md bg-surface-container-low -mx-space-lg -mt-space-lg p-space-lg rounded-t-xl">
+                <section className="bg-surface-container-lowest rounded-xl p-space-md sm:p-space-lg shadow-sm">
+                  <div className="flex items-center justify-between pb-space-md mb-space-md bg-surface-container-low -mx-space-md -mt-space-md sm:-mx-space-lg sm:-mt-space-lg p-space-md sm:p-space-lg rounded-t-xl">
                     <div className="flex items-center gap-space-sm">
                       <span className="w-7 h-7 rounded-full bg-primary text-on-primary flex items-center justify-center font-label-md text-label-md font-bold">3</span>
                       <div>
@@ -496,12 +521,12 @@ export default function CheckoutPage() {
                   </div>
                 </section>
 
-                {/* Confirmación */}
-                <section className="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm space-y-space-md">
-                  <button 
+                {/* Confirmación (sticky at the bottom on mobile) */}
+                <section className="max-lg:sticky max-lg:bottom-0 max-lg:z-30 max-lg:-mx-margin-sm max-lg:rounded-none max-lg:pb-[max(1rem,env(safe-area-inset-bottom))] max-lg:shadow-[0_-4px_16px_rgba(0,0,0,0.08)] bg-surface-container-lowest rounded-xl p-space-md sm:p-space-lg shadow-sm space-y-space-md">
+                  <button
                     onClick={handleConfirmOrder}
                     disabled={cart.length === 0 || isSubmitting}
-                    className="w-full bg-primary hover:bg-primary-container text-on-primary py-space-md px-space-lg rounded-xl font-label-md text-headline-sm text-center font-bold tracking-wide shadow-md transition-all flex items-center justify-center gap-space-sm disabled:opacity-60 disabled:cursor-not-allowed" 
+                    className="w-full bg-primary hover:bg-primary-container text-on-primary py-space-md px-space-lg rounded-xl font-label-md text-headline-sm text-center font-bold tracking-wide shadow-md transition-all flex items-center justify-center gap-space-sm disabled:opacity-60 disabled:cursor-not-allowed"
                     type="button"
                   >
                     {isSubmitting ? (
@@ -512,7 +537,8 @@ export default function CheckoutPage() {
                     ) : (
                       <>
                         <span className="material-symbols-outlined text-[22px]">lock</span>
-                        <span>Confirmar y Realizar Pedido ({formatMoney(totalFinal)})</span>
+                        <span className="lg:hidden">Confirmar pedido · {formatMoney(totalFinal)}</span>
+                        <span className="hidden lg:inline">Confirmar y Realizar Pedido ({formatMoney(totalFinal)})</span>
                       </>
                     )}
                   </button>
@@ -521,17 +547,18 @@ export default function CheckoutPage() {
               </div>
 
               {/* RIGHT COLUMN: Resumen */}
-              <aside className="w-full lg:w-[35%] lg:sticky lg:top-[150px] space-y-space-md">
-                <div className="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm space-y-space-md">
-                  <div className="flex items-center justify-between pb-space-sm bg-surface-container-low -mx-space-lg -mt-space-lg p-space-md rounded-t-xl">
-                    <div className="flex items-center gap-space-xs">
+              <aside className="w-full lg:w-[35%] lg:sticky lg:top-[150px] space-y-space-md order-first lg:order-none">
+                <div className="bg-surface-container-lowest rounded-xl p-space-md sm:p-space-lg shadow-sm space-y-space-md">
+                  <div className="flex items-center justify-between pb-space-sm bg-surface-container-low -mx-space-md -mt-space-md sm:-mx-space-lg sm:-mt-space-lg p-space-md rounded-t-xl">
+                    <button type="button" onClick={() => setShowItems(!showItems)} className="flex items-center gap-space-xs lg:pointer-events-none" aria-expanded={showItems}>
                       <span className="material-symbols-outlined text-primary text-[20px]">shopping_basket</span>
                       <h3 className="font-headline-sm text-headline-sm text-on-surface">Resumen de Compra</h3>
-                    </div>
+                      <span className="material-symbols-outlined text-[20px] text-on-surface-variant lg:hidden">{showItems ? 'expand_less' : 'expand_more'}</span>
+                    </button>
                     <span className="font-data-tabular text-data-tabular bg-surface-container-highest px-space-xs py-0.5 rounded text-on-surface-variant">{totalItems} artículos</span>
                   </div>
 
-                  <div className="space-y-space-md max-h-[40vh] overflow-y-auto pr-2 custom-scrollbar">
+                  <div className={`${showItems ? 'block' : 'hidden'} lg:block space-y-space-md max-h-[40vh] overflow-y-auto pr-2 custom-scrollbar`}>
                     {cart.length === 0 ? (
                       <p className="text-body-sm text-on-surface-variant text-center py-4">Tu carrito está vacío.</p>
                     ) : (
@@ -556,7 +583,7 @@ export default function CheckoutPage() {
                     )}
                   </div>
 
-                  <div className="bg-surface-container-low p-space-md rounded-lg space-y-space-xs font-body-sm text-body-sm mt-4">
+                  <div className={`${showItems ? 'block' : 'hidden'} lg:block bg-surface-container-low p-space-md rounded-lg space-y-space-xs font-body-sm text-body-sm mt-4`}>
                     <div className="flex justify-between text-on-surface-variant">
                       <span>Subtotal Neto Gravado</span>
                       <span className="font-data-tabular text-on-surface font-semibold">{formatMoney(subtotalNeto)}</span>
@@ -580,12 +607,12 @@ export default function CheckoutPage() {
                       <p className="font-body-sm text-body-sm text-on-surface-variant">Incluye IVA</p>
                     </div>
                     <div className="text-right">
-                      <span className="font-headline-lg text-headline-lg text-primary font-bold tracking-tight leading-none">{formatMoney(totalFinal)}</span>
+                      <span className="font-headline-lg text-[24px] sm:text-headline-lg text-primary font-bold tracking-tight leading-none">{formatMoney(totalFinal)}</span>
                     </div>
                   </div>
                 </div>
 
-                <div className="bg-surface-container-high rounded-xl p-space-md space-y-space-sm shadow-sm">
+                <div className="hidden lg:block bg-surface-container-high rounded-xl p-space-md space-y-space-sm shadow-sm">
                   <div className="flex items-center gap-space-sm">
                     <div className="w-10 h-10 rounded-full bg-secondary text-on-secondary flex items-center justify-center shrink-0">
                       <span className="material-symbols-outlined text-[20px]">support_agent</span>

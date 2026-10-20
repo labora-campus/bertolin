@@ -2,6 +2,8 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
+import { canOptimizeImage } from '@/lib/image'
 import { getBanners } from '@/lib/supabase'
 
 export type SlideData = {
@@ -178,16 +180,24 @@ export function BannerCarousel() {
                   />
                 ) : (
                   <div className="w-[100%] h-[70%] md:h-[85%] right-0 absolute rounded-xl md:rounded-2xl overflow-hidden shadow-2xl bg-black/10">
-                    <img
+                    {/* Blurred backdrop only needs a tiny version of the image */}
+                    <Image
+                      fill
                       src={slide.image}
                       alt=""
                       aria-hidden="true"
-                      className="absolute inset-0 w-full h-full object-cover scale-110 blur-2xl opacity-60"
+                      sizes="64px"
+                      unoptimized={!canOptimizeImage(slide.image)}
+                      className="object-cover scale-110 blur-2xl opacity-60"
                     />
-                    <img
+                    <Image
+                      fill
                       src={slide.image}
                       alt={slide.title}
-                      className="relative w-full h-full object-contain"
+                      priority={index === 0}
+                      sizes="(max-width: 768px) 45vw, 600px"
+                      unoptimized={!canOptimizeImage(slide.image)}
+                      className="object-contain"
                     />
                   </div>
                 )}

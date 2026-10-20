@@ -12,7 +12,7 @@ export function CartDrawer() {
     new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS', maximumFractionDigits: 0 }).format(amount)
 
   return (
-    <div className="fixed inset-0 z-[100] flex justify-end">
+    <div className="fixed inset-0 z-[100] flex items-end sm:items-stretch justify-end">
       {/* Backdrop */}
       <div 
         className="absolute inset-0 bg-on-surface/40 backdrop-blur-sm transition-opacity"
@@ -20,7 +20,11 @@ export function CartDrawer() {
       />
       
       {/* Drawer */}
-      <aside className="relative w-full max-w-md bg-surface-container-lowest h-full shadow-2xl flex flex-col animate-in slide-in-from-right duration-300">
+      <aside className="relative w-full sm:max-w-md bg-surface-container-lowest max-h-[88vh] sm:max-h-none sm:h-full rounded-t-2xl sm:rounded-none shadow-2xl flex flex-col animate-in slide-in-from-bottom sm:slide-in-from-right duration-300">
+        {/* Grab handle (mobile) */}
+        <div className="sm:hidden flex justify-center pt-2" aria-hidden="true">
+          <span className="w-10 h-1 rounded-full bg-outline-variant" />
+        </div>
         
         {/* Header */}
         <div className="flex items-center justify-between p-space-md border-b border-surface-container">
@@ -32,18 +36,19 @@ export function CartDrawer() {
               Carrito <span className="text-on-surface-variant font-normal">({cart.length})</span>
             </h2>
           </div>
-          <button 
+          <button
             onClick={() => setIsCartOpen(false)}
-            className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container text-on-surface-variant transition-colors"
+            aria-label="Cerrar carrito"
+            className="w-11 h-11 flex items-center justify-center rounded-full hover:bg-surface-container text-on-surface-variant transition-colors"
           >
             <span className="material-symbols-outlined text-[24px]">close</span>
           </button>
         </div>
 
         {/* Cart Items */}
-        <div className="flex-1 overflow-y-auto p-space-md space-y-space-md">
+        <div className="flex-1 min-h-0 overflow-y-auto p-space-md space-y-space-md">
           {cart.length === 0 ? (
-            <div className="h-full flex flex-col items-center justify-center text-center space-y-space-md text-on-surface-variant opacity-60">
+            <div className="h-full min-h-48 flex flex-col items-center justify-center text-center space-y-space-md text-on-surface-variant opacity-60">
               <span className="material-symbols-outlined text-[64px]">shopping_cart</span>
               <p className="font-body-lg text-body-lg">Tu carrito está vacío.</p>
             </div>
@@ -63,25 +68,25 @@ export function CartDrawer() {
                       <h4 className="font-label-md text-label-md text-on-surface">{item.name}</h4>
                       <p className="font-body-sm text-[11px] text-on-surface-variant mt-0.5">{item.category}</p>
                     </div>
-                    <button 
+                    <button
                       onClick={() => removeFromCart(item.id)}
-                      className="text-outline hover:text-error transition-colors"
+                      aria-label="Quitar producto" className="w-11 h-11 -mt-2 -mr-2 flex items-center justify-center shrink-0 text-outline hover:text-error transition-colors"
                     >
-                      <span className="material-symbols-outlined text-[18px]">delete</span>
+                      <span className="material-symbols-outlined text-[20px]">delete</span>
                     </button>
                   </div>
                   <div className="flex items-center justify-between mt-2">
                     <div className="flex items-center bg-surface-container-lowest border border-outline-variant rounded">
-                      <button 
+                      <button
                         onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                        className="w-7 h-7 flex items-center justify-center text-on-surface hover:bg-surface-container transition-colors"
+                        className="w-11 h-11 sm:w-8 sm:h-8 flex items-center justify-center text-on-surface hover:bg-surface-container transition-colors"
                       >
                         <span className="material-symbols-outlined text-[16px]">remove</span>
                       </button>
-                      <span className="w-8 text-center font-data-tabular text-[13px]">{item.quantity}</span>
-                      <button 
+                      <span className="w-8 text-center font-data-tabular text-[15px] sm:text-[13px]">{item.quantity}</span>
+                      <button
                         onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                        className="w-7 h-7 flex items-center justify-center text-on-surface hover:bg-surface-container transition-colors"
+                        className="w-11 h-11 sm:w-8 sm:h-8 flex items-center justify-center text-on-surface hover:bg-surface-container transition-colors"
                       >
                         <span className="material-symbols-outlined text-[16px]">add</span>
                       </button>
@@ -96,7 +101,7 @@ export function CartDrawer() {
 
         {/* Footer / Summary */}
         {cart.length > 0 && (
-          <div className="border-t border-surface-container p-space-md bg-surface">
+          <div className="border-t border-surface-container p-space-md pb-[max(1rem,env(safe-area-inset-bottom))] bg-surface">
             <div className="flex items-center justify-between mb-space-xs">
               <span className="font-body-md text-body-md text-on-surface-variant">Subtotal</span>
               <span className="font-headline-sm text-headline-sm text-on-surface">{formatMoney(cartTotal)}</span>
@@ -106,14 +111,14 @@ export function CartDrawer() {
               <Link 
                 href="/checkout"
                 onClick={() => setIsCartOpen(false)}
-                className="w-full flex items-center justify-center gap-2 bg-primary text-on-primary py-space-sm rounded hover:bg-primary-container transition-colors font-label-md text-label-md shadow-sm"
+                className="w-full flex items-center justify-center gap-2 bg-primary text-on-primary min-h-12 py-space-sm rounded hover:bg-primary-container transition-colors font-label-md text-label-md shadow-sm"
               >
                 <span>Continuar compra</span>
                 <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
               </Link>
-              <button 
+              <button
                 onClick={() => setIsCartOpen(false)}
-                className="w-full py-space-sm text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-colors"
+                className="w-full min-h-11 py-space-sm text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-colors"
               >
                 Seguir comprando
               </button>

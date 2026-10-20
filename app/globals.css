@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "tw-animate-css";
 
 @theme {
   --color-secondary-fixed: #c2eaea;
@@ -151,4 +152,40 @@
 
 ::-webkit-scrollbar {
   display: none;
+}
+
+/* Leave room for fixed bottom bars on mobile (e.g. product purchase bar) */
+@media (max-width: 1023px) {
+  body:has([data-sticky-bar]) footer {
+    padding-bottom: 8.5rem;
+  }
+}
+
+/* Mobile type scale: headline tokens are CSS variables, so shrinking them here
+   resizes every title on small screens without touching each page */
+@media (max-width: 639px) {
+  :root {
+    --text-headline-xl: 32px;
+    --text-headline-xl--line-height: 38px;
+    --text-headline-lg: 26px;
+    --text-headline-lg--line-height: 32px;
+    --text-headline-md: 20px;
+    --text-headline-md--line-height: 26px;
+  }
+}
+
+/* iOS zooms into any field under 16px when focused */
+@media (max-width: 767px) {
+  input:not([type='checkbox']):not([type='radio']),
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+}
+
+/* Leave room for the mobile bottom nav */
+@media (max-width: 1023px) {
+  body:has([data-bottom-nav]) footer {
+    padding-bottom: 5rem;
+  }
 }
