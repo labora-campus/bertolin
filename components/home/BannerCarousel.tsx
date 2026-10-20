@@ -177,11 +177,17 @@ export function BannerCarousel() {
                     className="object-contain h-[85%] w-auto max-w-[100%] rounded-2xl mix-blend-multiply drop-shadow-2xl hover:scale-105 transition-transform duration-500"
                   />
                 ) : (
-                  <div className="w-[100%] h-[85%] right-0 absolute rounded-2xl overflow-hidden shadow-2xl">
-                    <img 
-                      src={slide.image} 
-                      alt={slide.title} 
-                      className="object-cover w-full h-full opacity-90"
+                  <div className="w-[100%] h-[85%] right-0 absolute rounded-2xl overflow-hidden shadow-2xl bg-black/10">
+                    <img
+                      src={slide.image}
+                      alt=""
+                      aria-hidden="true"
+                      className="absolute inset-0 w-full h-full object-cover scale-110 blur-2xl opacity-60"
+                    />
+                    <img
+                      src={slide.image}
+                      alt={slide.title}
+                      className="relative w-full h-full object-contain"
                     />
                   </div>
                 )}
